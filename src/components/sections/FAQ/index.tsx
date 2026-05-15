@@ -21,7 +21,7 @@ const GENERAL_QA = [
   {
     q: 'How does it work?',
     a: 'You submit your photos, our system analyses your facial structure against hundreds of markers, and you receive a comprehensive report within 48 hours.',
-  },
+  }, 
   {
     q: 'How long will it take to receive my results?',
     a: 'Most reports are delivered within 24–48 hours of photo submission.',
@@ -132,7 +132,7 @@ export default function FAQ() {
     <section ref={sectionRef} className={styles.section}>
       <div className={styles.container}>
         <div ref={topRef} className={styles.top}>
-          <p className={styles.label}>FAQ Section</p>
+          <p className={styles.label}>Your Questions</p>
           <h2 className={styles.heading}>
             Frequently asked{' '}
             <span className={styles.headingAccent}>questions</span>
