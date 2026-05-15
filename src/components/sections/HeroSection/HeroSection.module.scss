@@ -18,8 +18,21 @@
 }
 
 .label {
-  @include label;
-  margin-bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 165px;
+  height: 22px;
+  border: 1px solid #B8CED6;
+  border-radius: 99px;
+  font-family: $font-mono;
+  font-size: 0.48rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8DAEBB;
+  margin: 0 auto 22px;
+  gap:8px;
 }
 
 .heading {
@@ -33,10 +46,7 @@
 }
 
 .headingAccent {
-  font-family: $font-sans;
-  font-style: italic;
-  font-weight: 600;
-  color: #7ab8c6;
+  color: #9AAEB5;
 }
 
 .subtitle {
