@@ -1,0 +1,161 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.section {
+  padding: 120px 0 100px;
+  background: $white;
+}
+
+.container {
+  @include container;
+}
+
+.top {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.label {
+  @include label;
+  margin-bottom: 18px;
+}
+
+.heading {
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 400;
+  color: $text-primary;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+.headingAccent {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 0.82rem;
+  color: $text-secondary;
+  line-height: 1.65;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ── Active category card ───────────────────────────── */
+.activeCard {
+  border: 1px solid #e4e4e2;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 2px;
+}
+
+.activeCardHeader {
+  padding: 16px 24px;
+  background: #f5f5f3;
+  border-bottom: 1px solid #e4e4e2;
+}
+
+.activeCardTitle {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: $text-primary;
+  letter-spacing: 0.01em;
+}
+
+/* ── Accordion item ─────────────────────────────────── */
+.accordionItem {
+  border-bottom: 1px solid #ececea;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.accordionTrigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 16px 24px;
+  text-align: left;
+  background: none;
+  cursor: pointer;
+
+  &:hover .accordionQ {
+    color: $text-primary;
+  }
+}
+
+.accordionQ {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: $text-secondary;
+  line-height: 1.4;
+  transition: color 0.2s ease;
+
+  .accordionItem[data-open='true'] & {
+    color: $text-primary;
+    font-weight: 500;
+  }
+}
+
+.accordionIcon {
+  flex-shrink: 0;
+  margin-left: 16px;
+  width: 18px;
+  height: 18px;
+  color: $text-muted;
+  transition: transform 0.35s ease;
+
+  .accordionItem[data-open='true'] & {
+    transform: rotate(45deg);
+    color: $text-primary;
+  }
+}
+
+.accordionBody {
+  overflow: hidden;
+  height: 0;
+}
+
+.accordionAnswer {
+  padding: 0 24px 18px;
+  font-size: 0.8rem;
+  color: $text-secondary;
+  line-height: 1.7;
+}
+
+/* ── Category rows ──────────────────────────────────── */
+.categories {
+  margin-top: 2px;
+}
+
+.categoryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #ececea;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: #fafafa;
+  }
+
+  &:first-child {
+    border-top: 1px solid #ececea;
+  }
+}
+
+.categoryName {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: $text-secondary;
+}
+
+.categoryChevron {
+  color: $text-muted;
+  flex-shrink: 0;
+}

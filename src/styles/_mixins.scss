@@ -1,0 +1,38 @@
+@use 'variables' as *;
+
+@mixin container {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $gutter;
+
+  @media (max-width: $bp-md) {
+    padding: 0 24px;
+  }
+}
+
+@mixin label {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: $text-label;
+}
+
+@mixin serif-accent {
+  font-family: $font-serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin respond($bp) {
+  @if $bp == sm  { @media (max-width: $bp-sm)  { @content; } }
+  @if $bp == md  { @media (max-width: $bp-md)  { @content; } }
+  @if $bp == lg  { @media (max-width: $bp-lg)  { @content; } }
+  @if $bp == xl  { @media (max-width: $bp-xl)  { @content; } }
+}

@@ -1,0 +1,67 @@
+@use '../../../styles/variables' as *;
+
+.container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  cursor: ew-resize;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.imageWrap {
+  position: absolute;
+  inset: 0;
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.75);
+  pointer-events: none;
+  will-change: left;
+}
+
+.handle {
+  position: absolute;
+  top: calc(50% - 22px);
+  left: calc(50% - 22px);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+  color: $text-primary;
+  will-change: transform;
+  z-index: 10;
+}
+
+.label {
+  position: absolute;
+  bottom: 20px;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px 10px;
+  border-radius: 2px;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+.labelBefore {
+  left: 20px;
+}
+
+.labelAfter {
+  right: 20px;
+}
