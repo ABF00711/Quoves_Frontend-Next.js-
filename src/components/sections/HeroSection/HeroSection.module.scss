@@ -178,10 +178,6 @@
   @include respond(md) {
     border-bottom: 1px solid #e8e8e6;
   }
-
-  &:last-child {
-    border-right: none;
-  }
   
   &Active {
     background: linear-gradient(46deg, #9b877d -23%, #9AAEB5 100%);

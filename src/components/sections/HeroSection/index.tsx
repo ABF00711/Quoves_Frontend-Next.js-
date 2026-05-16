@@ -90,7 +90,7 @@ export default function HeroSection() {
 
       // Connector rectangle: 30% of card height, centered vertically
       const midY      = (by1 + by2) / 2;
-      const connHalfH = (by2 - by1) * 0.15;
+      const connHalfH = (by2 - by1) * 0.05;
       const cy1 = midY - connHalfH;
       const cy2 = midY + connHalfH;
       const CR  = 21.53; // connector corner radius
