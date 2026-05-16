@@ -156,6 +156,9 @@ export default function HeroSection() {
         trailEl.setAttribute('stroke-dashoffset', String(TAIL_LEN - headLen));
       }
 
+      // Pixel separation between the two dots along the path
+      const SEP_PX = 2300;
+
       let anim1: gsap.core.Tween;
       let anim2: gsap.core.Tween;
 
@@ -164,9 +167,12 @@ export default function HeroSection() {
         onUpdate() { syncTrail(t1, g1, anim1); },
       });
       anim2 = gsap.to(d2, {
-        motionPath: motionOpts, duration: 8, delay: 0.55, repeat: -1, ease: 'none',
+        motionPath: motionOpts, duration: 8, repeat: -1, ease: 'none',
         onUpdate() { syncTrail(t2, g2, anim2); },
       });
+      // Pre-seek dot2 so both dots appear immediately at the right positions
+      anim2.progress(1 - SEP_PX / totalLength);
+      syncTrail(t2, g2, anim2);
     }, 150);
 
     return () => {

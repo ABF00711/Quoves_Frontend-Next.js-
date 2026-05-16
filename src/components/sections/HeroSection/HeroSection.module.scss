@@ -95,13 +95,14 @@
 .compareLabel {
   position: absolute;
   top: 16px;
-  left: 18px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
   font-size: 16.15px;
   font-weight: 400;
-  letter-spacing: 0.2em; 
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #ffff;
+  color: #fff;
   font-family: $font-mono;
 }
 
