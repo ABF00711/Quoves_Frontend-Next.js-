@@ -28,11 +28,10 @@ export default function HeroSection() {
   const stepsRef      = useRef<HTMLDivElement>(null);
 
   // SVG refs
-  const svgRef   = useRef<SVGSVGElement>(null);
-  const path1Ref = useRef<SVGPathElement>(null);
-  const path2Ref = useRef<SVGPathElement>(null);
-  const dot1Ref  = useRef<SVGCircleElement>(null);
-  const dot2Ref  = useRef<SVGCircleElement>(null);
+  const svgRef  = useRef<SVGSVGElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const dot1Ref = useRef<SVGCircleElement>(null);
+  const dot2Ref = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -56,65 +55,78 @@ export default function HeroSection() {
       const before = beforeCardRef.current;
       const after  = afterCardRef.current;
       const svg    = svgRef.current;
-      const p1     = path1Ref.current;
-      const p2     = path2Ref.current;
+      const path   = pathRef.current;
       const d1     = dot1Ref.current;
       const d2     = dot2Ref.current;
-      if (!comp || !before || !after || !svg || !p1 || !p2 || !d1 || !d2) return;
+      if (!comp || !before || !after || !svg || !path || !d1 || !d2) return;
 
       const beforeRect = before.getBoundingClientRect();
       const afterRect  = after.getBoundingClientRect();
       const compRect   = comp.getBoundingClientRect();
 
-      const PAD = 19;
+      const PAD = 38; // 19px visual padding (viewBox offset accounts for half)
       const R   = 12;
 
-      // Extend viewBox by PAD so all four padded edges are within the SVG coordinate space
-      svg.setAttribute('viewBox', `${-PAD} ${-PAD} ${compRect.width + PAD * 2} ${compRect.height + PAD * 2}`);
+      svg.setAttribute('viewBox', `${-PAD / 2} ${-PAD / 2} ${compRect.width + PAD} ${compRect.height + PAD}`);
 
-      const roundedRect = (l: number, t: number, r: number, b: number) => [
-        `M ${l + R},${t}`,
-        `H ${r - R}`,
-        `Q ${r},${t} ${r},${t + R}`,
-        `V ${b - R}`,
-        `Q ${r},${b} ${r - R},${b}`,
-        `H ${l + R}`,
-        `Q ${l},${b} ${l},${b - R}`,
-        `V ${t + R}`,
-        `Q ${l},${t} ${l + R},${t}`,
+      // Before card rectangle bounds
+      const bx1 = beforeRect.left   - compRect.left - PAD;
+      const by1 = beforeRect.top    - compRect.top  - PAD;
+      const bx2 = beforeRect.right  - compRect.left + PAD;
+      const by2 = beforeRect.bottom - compRect.top  + PAD;
+
+      // After card rectangle bounds
+      const ax1 = afterRect.left   - compRect.left - PAD;
+      const ay2 = afterRect.bottom - compRect.top  + PAD;
+      const ax2 = afterRect.right  - compRect.left + PAD;
+
+      // Connector rectangle: 30% of card height, centered vertically
+      const midY      = (by1 + by2) / 2;
+      const connHalfH = (by2 - by1) * 0.15;
+      const cy1 = midY - connHalfH;
+      const cy2 = midY + connHalfH;
+
+      /*
+       * Single combined path:
+       *   Before card (TL+BL corners rounded) ──connector top──
+       *   After card (TR+BR corners rounded) ──connector bottom── close
+       *
+       *   ┌──[Before]──┐           ┌──[After]──┐
+       *   │            └────top────┘           │
+       *   │            ┌───bot─────┐           │
+       *   └──[Before]──┘           └──[After]──┘
+       */
+      const d = [
+        `M ${bx1 + R},${by1}`,
+        `H ${bx2}`,
+        `V ${cy1}`,
+        `H ${ax1}`,
+        `V ${by1}`,
+        `H ${ax2 - R}`,
+        `Q ${ax2},${by1} ${ax2},${by1 + R}`,
+        `V ${ay2 - R}`,
+        `Q ${ax2},${ay2} ${ax2 - R},${ay2}`,
+        `H ${ax1}`,
+        `V ${cy2}`,
+        `H ${bx2}`,
+        `V ${by2}`,
+        `H ${bx1 + R}`,
+        `Q ${bx1},${by2} ${bx1},${by2 - R}`,
+        `V ${by1 + R}`,
+        `Q ${bx1},${by1} ${bx1 + R},${by1}`,
         'Z',
       ].join(' ');
 
-      // Before card: 19px padding on all four sides, 12px corner radius
-      const bx1 = beforeRect.left   - compRect.left - PAD -PAD;
-      const by1 = beforeRect.top    - compRect.top  - PAD - PAD;
-      const bx2 = beforeRect.right  - compRect.left + PAD + PAD;
-      const by2 = beforeRect.bottom - compRect.top  + PAD + PAD;
-      p1.setAttribute('d', roundedRect(bx1, by1, bx2, by2));
+      path.setAttribute('d', d);
 
-      // After card: 19px padding on all four sides, 12px corner radius
-      const ax1 = afterRect.left   - compRect.left - PAD - PAD;
-      const ay1 = afterRect.top    - compRect.top  - PAD - PAD;
-      const ax2 = afterRect.right  - compRect.left + PAD + PAD;
-      const ay2 = afterRect.bottom - compRect.top  + PAD + PAD;
-      p2.setAttribute('d', roundedRect(ax1, ay1, ax2, ay2));
+      const motionOpts = {
+        path,
+        align: path,
+        alignOrigin: [0.5, 0.5] as [number, number],
+      };
 
-      // dot1 travels the Before card rectangle
-      gsap.to(d1, {
-        motionPath: { path: p1, align: p1, alignOrigin: [0.5, 0.5] as [number, number] },
-        duration: 6,
-        repeat: -1,
-        ease: 'none',
-      });
-
-      // dot2 travels the After card rectangle, offset in time
-      gsap.to(d2, {
-        motionPath: { path: p2, align: p2, alignOrigin: [0.5, 0.5] as [number, number] },
-        duration: 6,
-        delay: 0.55,
-        repeat: -1,
-        ease: 'none',
-      });
+      gsap.to(d1, { motionPath: motionOpts, duration: 8, repeat: -1, ease: 'none' });
+      gsap.to(d2, { motionPath: motionOpts, duration: 8, delay: 0.55, repeat: -1, ease: 'none' });
     }, 150);
 
     return () => {
@@ -174,13 +186,10 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* SVG: two card-outline paths + one dot per card */}
+          {/* Single combined SVG path + two animated dots */}
           <svg ref={svgRef} className={styles.pathSvg} aria-hidden="true">
-            <path ref={path1Ref} className={styles.pathLine} />
-            <path ref={path2Ref} className={styles.pathLine} />
-            {/* lead dot — travels Before card path */}
+            <path ref={pathRef} className={styles.pathLine} />
             <circle ref={dot1Ref} r="4.5" className={styles.dot} />
-            {/* trail dot — travels After card path */}
             <circle ref={dot2Ref} r="3"   className={styles.dotTrail} />
           </svg>
 
@@ -202,5 +211,5 @@ export default function HeroSection() {
 
       </div>
     </section>
-  ); 
+  );
 }
