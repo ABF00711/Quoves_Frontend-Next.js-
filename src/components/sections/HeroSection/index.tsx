@@ -28,10 +28,14 @@ export default function HeroSection() {
   const stepsRef      = useRef<HTMLDivElement>(null);
 
   // SVG refs
-  const svgRef  = useRef<SVGSVGElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const dot1Ref = useRef<SVGCircleElement>(null);
-  const dot2Ref = useRef<SVGCircleElement>(null);
+  const svgRef    = useRef<SVGSVGElement>(null);
+  const pathRef   = useRef<SVGPathElement>(null);
+  const trail1Ref = useRef<SVGPathElement>(null);
+  const trail2Ref = useRef<SVGPathElement>(null);
+  const grad1Ref  = useRef<SVGLinearGradientElement>(null);
+  const grad2Ref  = useRef<SVGLinearGradientElement>(null);
+  const dot1Ref   = useRef<SVGCircleElement>(null);
+  const dot2Ref   = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -56,9 +60,13 @@ export default function HeroSection() {
       const after  = afterCardRef.current;
       const svg    = svgRef.current;
       const path   = pathRef.current;
-      const d1     = dot1Ref.current;
-      const d2     = dot2Ref.current;
-      if (!comp || !before || !after || !svg || !path || !d1 || !d2) return;
+      const d1 = dot1Ref.current;
+      const d2 = dot2Ref.current;
+      const t1 = trail1Ref.current;
+      const t2 = trail2Ref.current;
+      const g1 = grad1Ref.current;
+      const g2 = grad2Ref.current;
+      if (!comp || !before || !after || !svg || !path || !d1 || !d2 || !t1 || !t2 || !g1 || !g2) return;
 
       const beforeRect = before.getBoundingClientRect();
       const afterRect  = after.getBoundingClientRect();
@@ -117,6 +125,14 @@ export default function HeroSection() {
       ].join(' ');
 
       path.setAttribute('d', d);
+      t1.setAttribute('d', d);
+      t2.setAttribute('d', d);
+
+      const totalLength = path.getTotalLength();
+      const TAIL_LEN    = 174.94;
+      const dashArray   = `${TAIL_LEN} ${totalLength + TAIL_LEN}`;
+      t1.setAttribute('stroke-dasharray', dashArray);
+      t2.setAttribute('stroke-dasharray', dashArray);
 
       const motionOpts = {
         path,
@@ -124,8 +140,33 @@ export default function HeroSection() {
         alignOrigin: [0.5, 0.5] as [number, number],
       };
 
-      gsap.to(d1, { motionPath: motionOpts, duration: 8, repeat: -1, ease: 'none' });
-      gsap.to(d2, { motionPath: motionOpts, duration: 8, delay: 0.55, repeat: -1, ease: 'none' });
+      function syncTrail(
+        trailEl: SVGPathElement,
+        gradEl: SVGLinearGradientElement,
+        anim: gsap.core.Tween,
+      ) {
+        const headLen = anim.progress() * totalLength;
+        const tailLen = ((headLen - TAIL_LEN) % totalLength + totalLength) % totalLength;
+        const headPt  = path!.getPointAtLength(Math.min(headLen, totalLength - 0.01));
+        const tailPt  = path!.getPointAtLength(tailLen);
+        gradEl.setAttribute('x1', String(tailPt.x));
+        gradEl.setAttribute('y1', String(tailPt.y));
+        gradEl.setAttribute('x2', String(headPt.x));
+        gradEl.setAttribute('y2', String(headPt.y));
+        trailEl.setAttribute('stroke-dashoffset', String(TAIL_LEN - headLen));
+      }
+
+      let anim1: gsap.core.Tween;
+      let anim2: gsap.core.Tween;
+
+      anim1 = gsap.to(d1, {
+        motionPath: motionOpts, duration: 8, repeat: -1, ease: 'none',
+        onUpdate() { syncTrail(t1, g1, anim1); },
+      });
+      anim2 = gsap.to(d2, {
+        motionPath: motionOpts, duration: 8, delay: 0.55, repeat: -1, ease: 'none',
+        onUpdate() { syncTrail(t2, g2, anim2); },
+      });
     }, 150);
 
     return () => {
@@ -185,9 +226,21 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Single combined SVG path + two animated dots */}
+          {/* Single combined SVG path + two animated dots with gradient tails */}
           <svg ref={svgRef} className={styles.pathSvg} aria-hidden="true">
-            <path ref={pathRef} className={styles.pathLine} />
+            <defs>
+              <linearGradient ref={grad1Ref} id="tailGrad1" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#CDDBE1" />
+                <stop offset="100%" stopColor="#869AA1" />
+              </linearGradient>
+              <linearGradient ref={grad2Ref} id="tailGrad2" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#CDDBE1" />
+                <stop offset="100%" stopColor="#869AA1" />
+              </linearGradient>
+            </defs>
+            <path ref={pathRef}   className={styles.pathLine} />
+            <path ref={trail1Ref} className={styles.tailPath} stroke="url(#tailGrad1)" />
+            <path ref={trail2Ref} className={styles.tailPath} stroke="url(#tailGrad2)" />
             <circle ref={dot1Ref} r="4.5" className={styles.dot} />
             <circle ref={dot2Ref} r="3"   className={styles.dotTrail} />
           </svg>

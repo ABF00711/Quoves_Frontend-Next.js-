@@ -97,15 +97,12 @@
   top: 16px;
   left: 18px;
   z-index: 2;
-  font-size: 0.58rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-size: 16.15px;
+  font-weight: 400;
+  letter-spacing: 0.2em; 
   text-transform: uppercase;
-  color: $text-secondary;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(4px);
-  padding: 4px 10px;
-  border-radius: 3px;
+  color: #ffff;
+  font-family: $font-mono;
 }
 
 .imgWrap {
@@ -130,17 +127,17 @@
 }
 
 .pathLine {
-  stroke: #C4D8DF;
+  stroke: #D7E5EB;
   stroke-width: 1;
   fill: none;
 }
 
-.dot {
-  fill: #7AB8C6;
-}
+.dot      { fill: #869AA1; }
+.dotTrail { fill: #869AA1; }
 
-.dotTrail {
-  fill: #7AB8C6;
+.tailPath {
+  fill: none;
+  stroke-width: 2;
 }
 
 /* ── Steps ────────────────────────────────────────────── */
