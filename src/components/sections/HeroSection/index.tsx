@@ -85,30 +85,25 @@ export default function HeroSection() {
       const connHalfH = (by2 - by1) * 0.15;
       const cy1 = midY - connHalfH;
       const cy2 = midY + connHalfH;
+      const CR  = 21.53; // connector corner radius
 
-      /*
-       * Single combined path:
-       *   Before card (TL+BL corners rounded) ──connector top──
-       *   After card (TR+BR corners rounded) ──connector bottom── close
-       *
-       *   ┌──[Before]──┐           ┌──[After]──┐
-       *   │            └────top────┘           │
-       *   │            ┌───bot─────┐           │
-       *   └──[Before]──┘           └──[After]──┘
-       */
       const d = [
         `M ${bx1 + R},${by1}`,
         `H ${bx2}`,
-        `V ${cy1}`,
-        `H ${ax1}`,
+        `V ${cy1 - CR}`,                                  // ↓ approach connector TL
+        `Q ${bx2},${cy1} ${bx2 + CR},${cy1}`,            // connector TL corner (↓→)
+        `H ${ax1 - CR}`,                                  // connector top line →
+        `Q ${ax1},${cy1} ${ax1},${cy1 - CR}`,            // connector TR corner (→↑)
         `V ${by1}`,
         `H ${ax2 - R}`,
         `Q ${ax2},${by1} ${ax2},${by1 + R}`,
         `V ${ay2 - R}`,
         `Q ${ax2},${ay2} ${ax2 - R},${ay2}`,
         `H ${ax1}`,
-        `V ${cy2}`,
-        `H ${bx2}`,
+        `V ${cy2 + CR}`,                                  // ↑ approach connector BR
+        `Q ${ax1},${cy2} ${ax1 - CR},${cy2}`,            // connector BR corner (↑←)
+        `H ${bx2 + CR}`,                                  // connector bottom line ←
+        `Q ${bx2},${cy2} ${bx2},${cy2 + CR}`,            // connector BL corner (←↓)
         `V ${by2}`,
         `H ${bx1 + R}`,
         `Q ${bx1},${by2} ${bx1},${by2 - R}`,
