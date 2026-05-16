@@ -66,23 +66,38 @@ export default function HeroSection() {
       const afterRect  = after.getBoundingClientRect();
       const compRect   = comp.getBoundingClientRect();
 
-      svg.setAttribute('viewBox', `0 0 ${compRect.width} ${compRect.height}`);
-
       const PAD = 19;
+      const R   = 12;
 
-      // Before card: 19px padding on all four sides
-      const bx1 = beforeRect.left   - compRect.left - PAD;
-      const by1 = beforeRect.top    - compRect.top  - PAD;
-      const bx2 = beforeRect.right  - compRect.left + PAD;
-      const by2 = beforeRect.bottom - compRect.top  + PAD;
-      p1.setAttribute('d', `M ${bx1},${by1} H ${bx2} V ${by2} H ${bx1} Z`);
+      // Extend viewBox by PAD so all four padded edges are within the SVG coordinate space
+      svg.setAttribute('viewBox', `${-PAD} ${-PAD} ${compRect.width + PAD * 2} ${compRect.height + PAD * 2}`);
 
-      // After card: 19px padding on all four sides
-      const ax1 = afterRect.left   - compRect.left - PAD;
-      const ay1 = afterRect.top    - compRect.top  - PAD;
-      const ax2 = afterRect.right  - compRect.left + PAD;
-      const ay2 = afterRect.bottom - compRect.top  + PAD;
-      p2.setAttribute('d', `M ${ax1},${ay1} H ${ax2} V ${ay2} H ${ax1} Z`);
+      const roundedRect = (l: number, t: number, r: number, b: number) => [
+        `M ${l + R},${t}`,
+        `H ${r - R}`,
+        `Q ${r},${t} ${r},${t + R}`,
+        `V ${b - R}`,
+        `Q ${r},${b} ${r - R},${b}`,
+        `H ${l + R}`,
+        `Q ${l},${b} ${l},${b - R}`,
+        `V ${t + R}`,
+        `Q ${l},${t} ${l + R},${t}`,
+        'Z',
+      ].join(' ');
+
+      // Before card: 19px padding on all four sides, 12px corner radius
+      const bx1 = beforeRect.left   - compRect.left - PAD -PAD;
+      const by1 = beforeRect.top    - compRect.top  - PAD - PAD;
+      const bx2 = beforeRect.right  - compRect.left + PAD + PAD;
+      const by2 = beforeRect.bottom - compRect.top  + PAD + PAD;
+      p1.setAttribute('d', roundedRect(bx1, by1, bx2, by2));
+
+      // After card: 19px padding on all four sides, 12px corner radius
+      const ax1 = afterRect.left   - compRect.left - PAD - PAD;
+      const ay1 = afterRect.top    - compRect.top  - PAD - PAD;
+      const ax2 = afterRect.right  - compRect.left + PAD + PAD;
+      const ay2 = afterRect.bottom - compRect.top  + PAD + PAD;
+      p2.setAttribute('d', roundedRect(ax1, ay1, ax2, ay2));
 
       // dot1 travels the Before card rectangle
       gsap.to(d1, {
@@ -187,5 +202,5 @@ export default function HeroSection() {
 
       </div>
     </section>
-  );
+  ); 
 }
