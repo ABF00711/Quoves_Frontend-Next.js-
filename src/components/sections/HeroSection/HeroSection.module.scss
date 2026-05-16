@@ -182,15 +182,16 @@
   &:last-child {
     border-right: none;
   }
-
+  
   &Active {
-    background: #1c1c1a;
+    background: linear-gradient(46deg, #9b877d -23%, #9AAEB5 100%);
   }
 }
 
 .stepNum {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
+  padding: 2px;
   border-radius: 50%;
   border: 1px solid #9AAEB5;
   display: flex;
@@ -199,10 +200,15 @@
   font-size: 0.6rem;
   font-weight: 500;
   background-color: #9AAEB5;
-  color: white;
+  color: $white;
   flex-shrink: 0;
-  transition: color 0.3s, border-color 0.3s;
+  transition: background 0.3s, border-color 0.3s;
 
+  .stepActive & {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.45);
+    border: 1px #9b877d;
+  }
 }
 
 .stepText {
