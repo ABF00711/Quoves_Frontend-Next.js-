@@ -89,26 +89,30 @@ export default function HeroSection() {
 
       const d = [
         `M ${bx1 + R},${by1}`,
-        `H ${bx2}`,
-        `V ${cy1 - CR}`,                                  // ↓ approach connector TL
-        `Q ${bx2},${cy1} ${bx2 + CR},${cy1}`,            // connector TL corner (↓→)
-        `H ${ax1 - CR}`,                                  // connector top line →
-        `Q ${ax1},${cy1} ${ax1},${cy1 - CR}`,            // connector TR corner (→↑)
-        `V ${by1}`,
-        `H ${ax2 - R}`,
-        `Q ${ax2},${by1} ${ax2},${by1 + R}`,
-        `V ${ay2 - R}`,
-        `Q ${ax2},${ay2} ${ax2 - R},${ay2}`,
-        `H ${ax1}`,
-        `V ${cy2 + CR}`,                                  // ↑ approach connector BR
-        `Q ${ax1},${cy2} ${ax1 - CR},${cy2}`,            // connector BR corner (↑←)
-        `H ${bx2 + CR}`,                                  // connector bottom line ←
-        `Q ${bx2},${cy2} ${bx2},${cy2 + CR}`,            // connector BL corner (←↓)
-        `V ${by2}`,
-        `H ${bx1 + R}`,
-        `Q ${bx1},${by2} ${bx1},${by2 - R}`,
-        `V ${by1 + R}`,
-        `Q ${bx1},${by1} ${bx1 + R},${by1}`,
+        `H ${bx2 - R}`,                                   // → Before top
+        `Q ${bx2},${by1} ${bx2},${by1 + R}`,             // Before inner-TR (→↓)
+        `V ${cy1 - CR}`,                                   // ↓ approach connector TL
+        `Q ${bx2},${cy1} ${bx2 + CR},${cy1}`,             // connector TL corner (↓→)
+        `H ${ax1 - CR}`,                                   // connector top line →
+        `Q ${ax1},${cy1} ${ax1},${cy1 - CR}`,             // connector TR corner (→↑)
+        `V ${by1 + R}`,                                    // ↑ approach After inner-TL
+        `Q ${ax1},${by1} ${ax1 + R},${by1}`,              // After inner-TL corner (↑→)
+        `H ${ax2 - R}`,                                    // → After top
+        `Q ${ax2},${by1} ${ax2},${by1 + R}`,              // After outer-TR (→↓)
+        `V ${ay2 - R}`,                                    // ↓ After right
+        `Q ${ax2},${ay2} ${ax2 - R},${ay2}`,              // After outer-BR (↓←)
+        `H ${ax1 + R}`,                                    // ← After bottom
+        `Q ${ax1},${ay2} ${ax1},${ay2 - R}`,              // After inner-BL (←↑)
+        `V ${cy2 + CR}`,                                   // ↑ approach connector BR
+        `Q ${ax1},${cy2} ${ax1 - CR},${cy2}`,             // connector BR corner (↑←)
+        `H ${bx2 + CR}`,                                   // connector bottom line ←
+        `Q ${bx2},${cy2} ${bx2},${cy2 + CR}`,             // connector BL corner (←↓)
+        `V ${by2 - R}`,                                    // ↓ approach Before inner-BR
+        `Q ${bx2},${by2} ${bx2 - R},${by2}`,              // Before inner-BR (↓←)
+        `H ${bx1 + R}`,                                    // ← Before bottom
+        `Q ${bx1},${by2} ${bx1},${by2 - R}`,              // Before outer-BL (←↑)
+        `V ${by1 + R}`,                                    // ↑ Before left
+        `Q ${bx1},${by1} ${bx1 + R},${by1}`,              // Before outer-TL (↑→)
         'Z',
       ].join(' ');
 
