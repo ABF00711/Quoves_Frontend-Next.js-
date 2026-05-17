@@ -1,6 +1,9 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './Philosophy.module.scss';
 
 const CARDS = [
@@ -22,24 +25,51 @@ const CARDS = [
 ];
 
 const CONSIDER_BULLETS = [
-  'Most insecurity comes from not knowing your actual baseline',
-  'A precise report replaces vague anxiety with actionable data',
-  'Knowing exactly what to improve eliminates rumination',
-  'Social comparison almost always ignores lifestyle context',
+  'First impressions matter',
+  'It has a considerable impact on interpersonal interactions',
+  'Small improvements can drastically impact quality of life',
 ];
 
 const KEY_BULLETS = [
-  'Not chasing unrealistic benchmarks',
+  'Not chasing unrealistic standards',
   'Not trying to look like someone else',
   'Not seeking perfection',
   'Aiming only for a better version of yourself',
 ];
 
 export default function Philosophy() {
-  return (
-    <div className={styles.philosophyFrame}>
+  const frameRef = useRef<HTMLDivElement>(null);
+  const considerTextRef = useRef<HTMLDivElement>(null);
+  const leftCardRef = useRef<HTMLDivElement>(null);
+  const rightCardRef = useRef<HTMLDivElement>(null);
 
-      {/* ── Sticky video — stays fixed behind both sections as they scroll over it ── */}
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      gsap.from(considerTextRef.current, {
+        y: 40, opacity: 0, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: considerTextRef.current, start: 'top 80%' },
+      });
+
+      gsap.from(leftCardRef.current, {
+        x: -60, opacity: 0, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: leftCardRef.current, start: 'top 85%' },
+      });
+
+      gsap.from(rightCardRef.current, {
+        x: 60, opacity: 0, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: rightCardRef.current, start: 'top 85%' },
+      });
+    }, frameRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div ref={frameRef} className={styles.philosophyFrame}>
+
+      {/* ── Sticky video ── */}
       <div className={styles.videoSticky}>
         <video
           className={styles.bgVideo}
@@ -54,12 +84,11 @@ export default function Philosophy() {
         <div className={styles.bgVideoOverlay}></div>
       </div>
 
-      {/* Single blur overlay spanning insecurity + consider — no seam because it's one element */}
+      {/* Single blur overlay spanning insecurity + consider */}
       <div className={styles.blurOverlay} />
 
-      {/* ── Insecurity section — scrolls naturally over the sticky video ── */}
+      {/* ── Insecurity section ── */}
       <section className={styles.insecurity}>
-
         <div className={styles.insecurityInner}>
           <h2 className={styles.insecurityHeading}>
             Will analyzing my face
@@ -93,41 +122,47 @@ export default function Philosophy() {
         </div>
       </section>
 
-      {/* ── Consider section — follows insecurity, still over the sticky video ── */}
+      {/* ── Consider section ── */}
       <section className={styles.consider}>
-        <div className={styles.considerInner}>
-          <div className={styles.considerLeft}>
-            <p className={styles.considerLabel}>Consider this</p>
-            <h3 className={styles.considerHeading}>
-              Is it vain to care about{' '}
-              <span className={styles.considerAccent}>your appearance?</span>
-            </h3>
-            <p className={styles.considerBody}>
-              Most people care about how they look — that&rsquo;s not vanity, it&rsquo;s human.
-              The question is whether you approach it with intention or anxiety. Appearance
-              affects first impressions, self-confidence, and social outcomes in measurable ways.
-              Ignoring that doesn&rsquo;t make it go away.
-            </p>
-            <ul className={styles.bulletList}>
+
+        {/* Text appears first on scroll */}
+        <div ref={considerTextRef} className={styles.considerText}>
+          <h3 className={styles.considerHeading}>
+            Is it vain to care
+            <span className={styles.considerAccent}>about your appearance?</span>
+          </h3>
+          <p className={styles.considerBody}>
+            Many feel guilty about wanting to improve their looks, fearing it means
+            they&rsquo;re shallow or insecure. But here&rsquo;s what research tells us:
+            caring about appearance is natural, just like caring about finances and
+            education, it&rsquo;s just another form of self-improvement.
+          </p>
+        </div>
+
+        {/* Cards slide in after text */}
+        <div className={styles.considerCards}>
+          <div ref={leftCardRef} className={styles.considerCard}>
+            <p className={styles.considerCardTitle}>Consider this...</p>
+            <div className={styles.considerCardImage} />
+            <div className={styles.considerCardBullets}>
               {CONSIDER_BULLETS.map((b) => (
-                <li key={b} className={styles.bulletItem}>{b}</li>
+                <span key={b} className={styles.considerBullet}>{b}</span>
               ))}
-            </ul>
+            </div>
           </div>
 
-          <div className={styles.considerRight}>
-            <p className={styles.considerRightLabel}>The key is approaching it intelligently</p>
-            <h3 className={styles.keyHeading}>
-              Not chasing perfection —{' '}
-              <span className={styles.keyAccent}>chasing clarity</span>
+          <div ref={rightCardRef} className={styles.considerCard}>
+            <h3 className={styles.considerCardHeading}>
+              The key is approaching it intelligently
             </h3>
-            <ul className={styles.keyBullets}>
+            <div className={styles.considerCardBullets}>
               {KEY_BULLETS.map((b) => (
-                <li key={b} className={styles.keyBullet}>{b}</li>
+                <span key={b} className={styles.considerBullet}>{b}</span>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
+
       </section>
 
     </div>
