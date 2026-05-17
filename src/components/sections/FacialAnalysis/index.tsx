@@ -94,7 +94,7 @@ export default function FacialAnalysis() {
 
         <div className={styles.stage}>
 
-          <div>
+          <div className={styles.panelsWrapper}>
             {/* ── Left panels ── */}
             <div ref={leftPanelsRef} className={styles.panelsLeft}>
 
