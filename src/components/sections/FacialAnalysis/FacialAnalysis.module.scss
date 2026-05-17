@@ -398,7 +398,6 @@
 }
 
 .melaninBody {
-  flex: 1;
   position: relative;
   height: 280px;
   margin: 0 16px;
@@ -425,7 +424,7 @@
 
 .melaninLabel {
   position: absolute;
-  left: calc(50% + 14px);
+  left: calc(100% + 8px);
   transform: translateY(-50%);
   font-family: $font-mono;
   font-size: 0.42rem;
