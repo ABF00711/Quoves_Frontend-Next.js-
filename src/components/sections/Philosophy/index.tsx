@@ -133,7 +133,7 @@ export default function Philosophy() {
                     style={{ objectFit: 'cover', objectPosition: 'center top' }}
                   />
                 </div>
-                <div className={styles.cardBody}>
+                <div>
                   <p className={styles.cardTitle}>{card.title}</p>
                   <p className={styles.cardDesc}>{card.desc}</p>
                 </div>
