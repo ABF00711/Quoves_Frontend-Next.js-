@@ -5,16 +5,25 @@ import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
-  AreaChart,
+  ComposedChart,
   Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ReferenceLine,
+  ReferenceDot,
   ResponsiveContainer,
-  Tooltip,
 } from 'recharts';
 import styles from './FacialAnalysis.module.scss';
 
-const bellCurve = Array.from({ length: 24 }, (_, i) => {
-  const x = (i - 12) / 3.5;
-  return { v: Math.round(Math.exp(-0.5 * x * x) * 96) };
+const USER_DENSITY = 76; // user's position on 0–100 density scale
+
+const densityData = Array.from({ length: 101 }, (_, x) => {
+  const mean = 44;
+  const std = 17;
+  const y = Math.exp(-0.5 * Math.pow((x - mean) / std, 2));
+  const v = Math.round(y * 1000) / 1000;
+  return { x, curve: v, tail: x >= USER_DENSITY ? v : undefined };
 });
 
 // Active dot positions (row 0-4, col 0-4) shared across all quadrants
@@ -39,11 +48,11 @@ const THIRDS = [
 ];
 
 export default function FacialAnalysis() {
-  const sectionRef      = useRef<HTMLElement>(null);
-  const topRef          = useRef<HTMLDivElement>(null);
-  const faceRef         = useRef<HTMLDivElement>(null);
-  const leftPanelsRef   = useRef<HTMLDivElement>(null);
-  const rightPanelsRef  = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const topRef = useRef<HTMLDivElement>(null);
+  const faceRef = useRef<HTMLDivElement>(null);
+  const leftPanelsRef = useRef<HTMLDivElement>(null);
+  const rightPanelsRef = useRef<HTMLDivElement>(null);
 
   const [activeQ, setActiveQ] = useState<0 | 1 | 2 | 3>(1);
 
@@ -103,67 +112,117 @@ export default function FacialAnalysis() {
 
               {/* 10×10 dot grid split into 4 quadrants */}
               <div className={`${styles.panel} ${styles.dotGridPanel}`}>
-                <div className={styles.dotGrid}>
-                  <span className={styles.labelTop}>Subtle</span>
-                  <span className={styles.labelBottom}>Bold</span>
-                  <span className={styles.labelLeft}>Masculine</span>
-                  <span className={styles.labelRight}>Masculine</span>
-                  {([0, 1, 2, 3] as const).map(q => (
-                    <div
-                      key={q}
-                      className={styles.quadrant}
-                      onMouseEnter={() => setActiveQ(q)}
-                    >
-                      {Array.from({ length: 25 }, (_, idx) => {
-                        const lr = Math.floor(idx / 5);
-                        const lc = idx % 5;
-                        const lit = activeQ === q && ACTIVE_LOCAL.has(`${lr},${lc}`);
-                        return (
-                          <div
-                            key={idx}
-                            className={`${styles.dot}${lit ? ` ${styles.dotActive}` : ''}`}
-                          />
-                        );
-                      })}
-                    </div>
-                  ))}
+                <div className={`${styles.dotsContainer}`}>
+                  <div className={styles.dotGrid}>
+                    <span className={styles.labelTop}>Subtle</span>
+                    <span className={styles.labelBottom}>Bold</span>
+                    <span className={styles.labelLeft}>Masculine</span>
+                    <span className={styles.labelRight}>Masculine</span>
+                    {([0, 1, 2, 3] as const).map(q => (
+                      <div
+                        key={q}
+                        className={styles.quadrant}
+                        onMouseEnter={() => setActiveQ(q)}
+                      >
+                        {Array.from({ length: 25 }, (_, idx) => {
+                          const lr = Math.floor(idx / 5);
+                          const lc = idx % 5;
+                          const lit = activeQ === q && ACTIVE_LOCAL.has(`${lr},${lc}`);
+                          return (
+                            <div
+                              key={idx}
+                              className={`${styles.dot}${lit ? ` ${styles.dotActive}` : ''}`}
+                            />
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className={`${styles.badges}`}>
+                  <p className={`${styles.badgeLabel}`}>Brows fall in the top 20% for natural fullness.</p>
                 </div>
               </div>
 
-              {/* Bell curve / eyebrow density */}
-              <div className={`${styles.panel} ${styles.chartPanel}`}>
-                <p className={styles.chartLabel}>Low Smoothness</p>
-                <ResponsiveContainer width="100%" height={80}>
-                  <AreaChart data={bellCurve} margin={{ top: 4, right: 0, bottom: 0, left: 0 }}>
-                    <defs>
-                      <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#ffffff" stopOpacity={0.35} />
-                        <stop offset="100%" stopColor="#ffffff" stopOpacity={0.02} />
-                      </linearGradient>
-                    </defs>
-                    <Area
-                      type="monotone"
-                      dataKey="v"
-                      stroke="rgba(255,255,255,0.7)"
-                      strokeWidth={1.5}
-                      fill="url(#areaGrad)"
-                      dot={false}
-                    />
-                    <Tooltip
-                      contentStyle={{ background: 'rgba(0,0,0,0.6)', border: 'none', borderRadius: 4, fontSize: '0.6rem', color: '#fff' }}
-                      itemStyle={{ color: '#fff' }}
-                      formatter={(v) => [`${v ?? 0}%`, 'Score']}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-                <div className={styles.chartAxis}>
-                  <span>Rough(5%)</span>
-                  <span>Smooth(100%)</span>
+              <div>
+                {/* Density bell curve panel */}
+                <div className={`${styles.panel} ${styles.densityPanel}`}>
+                  <div className={styles.densityChart}>
+                    <ResponsiveContainer width="100%" height={130}>
+                      <ComposedChart data={densityData} margin={{ top: 16, right: 12, bottom: 4, left: 12 }}>
+                        <CartesianGrid
+                          stroke="rgba(255,255,255,0.08)"
+                          strokeDasharray=""
+                        />
+                        <XAxis dataKey="x" type="number" domain={[0, 100]} hide />
+                        <YAxis hide domain={[0, 1.15]} />
+                        <Area
+                          dataKey="curve"
+                          type="monotone"
+                          stroke="rgba(255,255,255,0.65)"
+                          strokeWidth={1.5}
+                          fill="rgba(255,255,255,0.03)"
+                          dot={false}
+                          isAnimationActive={false}
+                        />
+                        <Area
+                          dataKey="tail"
+                          type="monotone"
+                          stroke="none"
+                          fill="rgba(255,255,255,0.18)"
+                          dot={false}
+                          isAnimationActive={false}
+                          connectNulls={false}
+                        />
+                        <ReferenceLine
+                          x={USER_DENSITY}
+                          stroke="rgba(255,255,255,0.35)"
+                          strokeDasharray="3 4"
+                          strokeWidth={1}
+                        />
+                        <ReferenceDot
+                          x={USER_DENSITY}
+                          y={densityData[USER_DENSITY].curve}
+                          r={4}
+                          fill="#fff"
+                          stroke="rgba(255,255,255,0.3)"
+                          strokeWidth={5}
+                        />
+                        {/* Axis marker dots */}
+                        <ReferenceDot x={10} y={0} r={3} fill="rgba(255,255,255,0.4)" stroke="none" />
+                        <ReferenceDot x={50} y={0} r={3} fill="rgba(255,255,255,0.4)" stroke="none" />
+                        <ReferenceDot x={USER_DENSITY} y={0} r={3} fill="rgba(255,255,255,0.6)" stroke="none" />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className={styles.densityAxisLabels}>
+                    <span>Low Density</span>
+                    <span>Medium Density</span>
+                    <span>High Density</span>
+                  </div>
+                  <div className={styles.densityFooter}>
+                    <p>Your eyebrow density is in the mid 40th percentile</p>
+                  </div>
                 </div>
-                <p className={styles.percentileText}>
-                  Your eyebrow density is in the mid 40th percentile
-                </p>
-                <p className={styles.chartPct}>56%</p>
+
+                {/* Lip smoothness panel */}
+                <div className={`${styles.panel} ${styles.smoothnessPanel}`}>
+                  <p className={styles.smoothnessLabel}>Lip Smoothness</p>
+                  <p className={styles.smoothnessPct}>56%</p>
+                  <div className={styles.smoothnessTrackWrap}>
+                    <div className={styles.smoothnessIndicator} style={{ left: '56%' }}>
+                      <span className={styles.smoothnessPill}>56% (You)</span>
+                      <div className={styles.smoothnessDash} />
+                    </div>
+                    <div className={styles.smoothnessAxisLabels}>
+                      <span>Rough (0%)</span>
+                      <span>Smooth (100%)</span>
+                    </div>
+                    <div className={styles.smoothnessTrack}>
+                      <div className={styles.smoothnessFill} style={{ width: '56%' }} />
+                    </div>
+                  </div>
+                </div>
               </div>
 
             </div>

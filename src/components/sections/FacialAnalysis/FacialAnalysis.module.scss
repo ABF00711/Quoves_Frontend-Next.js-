@@ -95,7 +95,6 @@
 .panelsLeft,
 .panelsRight {
   display: flex;
-  flex-direction: column;
   gap: 16px;
   z-index: 2;
   pointer-events: all;
@@ -124,14 +123,25 @@
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 6px;
-  padding: 16px;
   will-change: transform, opacity;
 }
 
 /* ── Dot grid panel ─────────────────────────────────── */
 .dotGridPanel {
-  width: 200px;
-  padding: 28px 48px 28px 48px;
+  width: 270px;
+}
+
+.badges{
+  width: 100%;
+  height: 21px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px;
+}
+
+.badgeLabel{
+  font-family: $font-sans;
+  font-size: 9.24px;
+  color: #FFFF;
 }
 
 .labelTop,
@@ -171,6 +181,10 @@
   right: 0;
   top: 50%;
   transform: translate(calc(100% + 8px), -50%);
+}
+
+.dotsContainer{
+  padding: 80px 60px;
 }
 
 .dotGrid {
@@ -227,9 +241,9 @@
 }
 
 .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 25%;
   background: rgba(255, 255, 255, 0.18);
   transition: background 0.4s ease;
 
@@ -238,11 +252,7 @@
   }
 }
 
-/* ── Chart panel ─────────────────────────────────────── */
-.chartPanel {
-  width: 220px;
-}
-
+/* ── Shared label (used by ITA panel) ────────────────── */
 .chartLabel {
   font-family: $font-mono;
   font-size: 0.58rem;
@@ -252,36 +262,128 @@
   margin-bottom: 8px;
 }
 
-.chartAxis {
+/* ── Density bell curve panel ────────────────────────── */
+.densityPanel {
+  width: 280px;
+  padding: 7px;
+  overflow: hidden;
+}
+
+.densityAxisLabels {
   display: flex;
   justify-content: space-between;
-  margin-top: 6px;
+  padding: 6px 12px 8px;
 
   span {
     font-family: $font-mono;
-    font-size: 0.48rem;
+    font-size: 0.4rem;
     color: rgba(255, 255, 255, 0.4);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 }
 
-.percentileText {
-  font-family: $font-mono;
-  font-size: 0.5rem;
-  color: rgba(255, 255, 255, 0.45);
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-  margin-top: 8px;
-  font-style: italic;
+.densityFooter {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3.5px;
+  padding: 5px;
+
+  p {
+    font-family: $font-sans;
+    font-size: 9.24px;
+    color: #F9FBFB;
+    line-height: 1.45;
+    font-weight: 400;
+  }
 }
 
-.chartPct {
+/* ── Smoothness panel ────────────────────────────────── */
+.smoothnessPanel {
+  margin-top: 16px;
+  width: 280px;
+  padding: 6.75px;
+}
+
+.smoothnessLabel {
   font-family: $font-mono;
-  font-size: 1.6rem;
-  font-weight: 300;
+  font-size: 0.5rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.smoothnessPct {
+  font-family: $font-sans;
+  font-size: 27px;
+  font-weight: 400;
   color: $white;
   line-height: 1;
-  margin-top: 8px;
+}
+
+.smoothnessTrackWrap {
+  position: relative;
+  padding-top: 36px;
+}
+
+.smoothnessIndicator {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.smoothnessPill {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 99px;
+  padding: 2px 8px;
+  font-family: $font-sans;
+  font-size: 5.63px;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.smoothnessDash {
+  width: 1px;
+  height: 14px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.5) 0px,
+    rgba(255, 255, 255, 0.5) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+
+.smoothnessTrack {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.smoothnessFill {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 2px;
+}
+
+.smoothnessAxisLabels {
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    font-family: $font-mono;
+    font-size: 0.4rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.06em;
+  }
 }
 
 /* ── Color scale panel ───────────────────────────────── */
