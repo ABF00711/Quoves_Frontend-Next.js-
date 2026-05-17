@@ -106,6 +106,7 @@ export default function FacialAnalysis() {
                 <div className={styles.dotGrid}>
                   <span className={styles.labelTop}>Subtle</span>
                   <span className={styles.labelBottom}>Bold</span>
+                  <span className={styles.labelLeft}>Masculine</span>
                   <span className={styles.labelRight}>Masculine</span>
                   {([0, 1, 2, 3] as const).map(q => (
                     <div
