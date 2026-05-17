@@ -8,19 +8,19 @@ import styles from './Philosophy.module.scss';
 
 const CARDS = [
   {
-    img: '/images/overlay-1.png',
+    img: '/images/Lifestyle factors_image.png',
     title: 'Lifestyle factors',
-    desc: 'Sleep, nutrition, and stress all have measurable effects on skin quality and perceived age.',
+    desc: 'Considers diet, climate, stress, sleep, and habits.',
   },
   {
-    img: '/images/overlay-2.png',
+    img: '/images/Cultural_image.png',
     title: 'Cultural beauty standards',
-    desc: 'Beauty norms vary widely — understanding this context shapes a healthier relationship with your appearance.',
+    desc: 'Adapts to regional and societal ideals.',
   },
   {
-    img: '/images/face-analysis.png',
+    img: '/images/geneticFactors_image.png',
     title: 'Genetic factors',
-    desc: 'Genetic predispositions influence features, but targeted habits can still shift perception dramatically.',
+    desc: 'Takes into account genetic factors and how they might impact your facial aesthetics.',
   },
 ];
 
@@ -40,7 +40,6 @@ const KEY_BULLETS = [
 
 export default function Philosophy() {
   const insecurityRef = useRef<HTMLElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const bodyRef = useRef<HTMLParagraphElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -53,18 +52,6 @@ export default function Philosophy() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Parallax on background
-      gsap.to(bgRef.current, {
-        yPercent: 20,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: insecurityRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-      });
-
       // Heading & body
       gsap.from([headingRef.current, bodyRef.current], {
         y: 28,
@@ -112,7 +99,16 @@ export default function Philosophy() {
     <>
       {/* ── Full-bleed insecurity section ── */}
       <section ref={insecurityRef} className={styles.insecurity}>
-        <div className={styles.overlay} />
+        <video
+          className={styles.bgVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source src="/videos/landing-video.mp4" type="video/mp4" />
+        </video>
 
         <div className={styles.insecurityInner}>
           <h2 ref={headingRef} className={styles.insecurityHeading}>
@@ -128,15 +124,14 @@ export default function Philosophy() {
           <div ref={cardsRef} className={styles.cards}>
             {CARDS.map((card) => (
               <div key={card.title} className={styles.card}>
-                <div className={styles.cardImageWrap}>
-                  <Image
-                    src={card.img}
-                    alt={card.title}
-                    fill
-                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                  />
-                </div>
-                <div className={styles.cardBody}>
+                <Image
+                  src={card.img}
+                  alt={card.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                />
+                <div className={styles.cardContent}>
                   <p className={styles.cardTitle}>{card.title}</p>
                   <p className={styles.cardDesc}>{card.desc}</p>
                 </div>
