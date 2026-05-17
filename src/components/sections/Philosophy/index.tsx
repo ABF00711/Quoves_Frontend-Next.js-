@@ -8,7 +8,7 @@ import styles from './Philosophy.module.scss';
 
 const CARDS = [
   {
-    img: '/images/Lifestyle factors_image.png',
+    img: '/images/LifestyleFactors_image.png',
     title: 'Lifestyle factors',
     desc: 'Considers diet, climate, stress, sleep, and habits.',
   },
@@ -116,22 +116,24 @@ export default function Philosophy() {
             <span className={styles.insecurityHeadingAccent}>Make me insecure?</span>
           </h2>
           <p ref={bodyRef} className={styles.insecurityBody}>
-            Most insecurity comes from not knowing — from vague feelings that something is
-            &ldquo;off&rdquo; without understanding what or why. Precise knowledge replaces
-            anxiety with a clear, actionable picture of what you can actually change.
+            Most insecurity comes from uncertainty — not knowing if your concerns are real or
+            imagined. When you&rsquo;re guessing about your appearance, your mind often makes
+            things seem worse than they are.
           </p>
 
           <div ref={cardsRef} className={styles.cards}>
             {CARDS.map((card) => (
               <div key={card.title} className={styles.card}>
-                <Image
-                  src={card.img}
-                  alt={card.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                />
-                <div className={styles.cardContent}>
+                <div className={styles.cardImageWrap}>
+                  <Image
+                    src={card.img}
+                    alt={card.title}
+                    fill
+                    sizes="width: 120px"
+                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                  />
+                </div>
+                <div className={styles.cardBody}>
                   <p className={styles.cardTitle}>{card.title}</p>
                   <p className={styles.cardDesc}>{card.desc}</p>
                 </div>
