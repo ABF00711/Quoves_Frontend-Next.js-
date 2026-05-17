@@ -42,10 +42,10 @@ const SYMMETRY_LINES = [
 ];
 
 const MELANIN_LABELS = [
-  { label: 'Blue',  top: '5%'  },
-  { label: 'Green', top: '28%' },
-  { label: 'Brown', top: '56%' },
-  { label: 'Deep',  top: '82%' },
+  { label: 'Blue',  top: '5%',  side: 'right' as const },
+  { label: 'Green', top: '28%', side: 'left'  as const },
+  { label: 'Brown', top: '56%', side: 'right' as const },
+  { label: 'Deep',  top: '82%', side: 'left'  as const },
 ];
 const USER_MELANIN_TOP = '56%';
 
@@ -243,7 +243,16 @@ export default function FacialAnalysis() {
                 <div className={styles.melaninBody}>
                   <div className={styles.melaninBar}>
                     {MELANIN_LABELS.map(m => (
-                      <span key={m.label} className={styles.melaninLabel} style={{ top: m.top }}>
+                      <span
+                        key={m.label}
+                        className={styles.melaninLabel}
+                        style={{
+                          top: m.top,
+                          ...(m.side === 'left'
+                            ? { right: 'calc(100% + 8px)', left: 'auto' }
+                            : { left: 'calc(100% + 8px)' }),
+                        }}
+                      >
                         {m.label}
                       </span>
                     ))}

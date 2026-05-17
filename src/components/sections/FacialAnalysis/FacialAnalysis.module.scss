@@ -411,20 +411,31 @@
   bottom: 16px;
   width: 10px;
   border-radius: 5px;
+  overflow: hidden;
   background: linear-gradient(
     to bottom,
-    #7baed0 0%,
-    #5a8a7a 22%,
-    #6b7a50 38%,
-    #9a7848 55%,
-    #804028 75%,
-    #3d2010 100%
+    #cce0ec 0%,   #cce0ec 9.5%,
+    rgba(0,0,0,0.22) 9.5%, rgba(0,0,0,0.22) 10%,
+    #8ec8d8 10%,  #8ec8d8 21.5%,
+    rgba(0,0,0,0.2)  21.5%, rgba(0,0,0,0.2)  22%,
+    #68afc4 22%,  #68afc4 33.5%,
+    rgba(0,0,0,0.2)  33.5%, rgba(0,0,0,0.2)  34%,
+    #4890b0 34%,  #4890b0 43.5%,
+    rgba(0,0,0,0.25) 43.5%, rgba(0,0,0,0.25) 44%,
+    #1e4d6a 44%,  #1e4d6a 51.5%,
+    rgba(0,0,0,0.3)  51.5%, rgba(0,0,0,0.3)  52%,
+    #c89040 52%,  #c89040 61.5%,
+    rgba(0,0,0,0.2)  61.5%, rgba(0,0,0,0.2)  62%,
+    #a86030 62%,  #a86030 71.5%,
+    rgba(0,0,0,0.2)  71.5%, rgba(0,0,0,0.2)  72%,
+    #7a3820 72%,  #7a3820 83.5%,
+    rgba(0,0,0,0.22) 83.5%, rgba(0,0,0,0.22) 84%,
+    #3a1408 84%,  #3a1408 100%
   );
 }
 
 .melaninLabel {
   position: absolute;
-  left: calc(100% + 8px);
   transform: translateY(-50%);
   font-family: $font-mono;
   font-size: 0.42rem;
@@ -435,8 +446,8 @@
 
 .melaninRef {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: -16px;
+  right: -16px;
   display: flex;
   align-items: center;
   transform: translateY(-50%);
