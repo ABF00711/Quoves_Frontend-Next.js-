@@ -22,7 +22,6 @@
 
 .top {
   text-align: center;
-  margin-bottom: 60px;
 }
 
 .label {
@@ -58,10 +57,10 @@
 }
 
 .subtitle {
-  font-size: 0.82rem;
+  font-size: 16px;
   color: #9AAEB5;
   line-height: 1.65;
-  max-width: 380px;
+  max-width: 480px;
   margin: 0 auto;
 }
 
@@ -75,9 +74,8 @@
 }
 
 .faceWrap {
-  position: relative;
+  position: absolute;
   z-index: 2;
-  width: 460px;
   flex-shrink: 0;
 
   @include respond(md) {
