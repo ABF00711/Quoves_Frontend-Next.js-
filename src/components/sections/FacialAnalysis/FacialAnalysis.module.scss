@@ -130,30 +130,40 @@
 
 /* ── Dot grid panel ─────────────────────────────────── */
 .dotGridPanel {
-  width: 200px;
+  width: 160px;
+  padding: 28px 48px 28px 16px;
 }
 
-.dotGridInner {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.scaleLabels {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 108px; /* matches dot grid height */
-  padding: 6px 0;
-}
-
-.scaleLabel {
+.labelTop,
+.labelBottom,
+.labelRight {
+  position: absolute;
   font-family: $font-mono;
-  font-size: 0.48rem;
+  font-size: 0.44rem;
   color: rgba(255, 255, 255, 0.45);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.labelTop {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, calc(-100% - 5px));
+}
+
+.labelBottom {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, calc(100% + 5px));
+}
+
+.labelRight {
+  right: 0;
+  top: 50%;
+  transform: translate(calc(100% + 8px), -50%);
 }
 
 .dotGrid {
@@ -161,6 +171,45 @@
   grid-template-columns: 1fr 1fr;
   gap: 6px;
   flex: 1;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    transform: translateY(-50%);
+    background-image: repeating-linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.35) 0px,
+      rgba(255, 255, 255, 0.35) 3px,
+      transparent 3px,
+      transparent 7px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-50%);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.35) 0px,
+      rgba(255, 255, 255, 0.35) 3px,
+      transparent 3px,
+      transparent 7px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
 }
 
 .quadrant {

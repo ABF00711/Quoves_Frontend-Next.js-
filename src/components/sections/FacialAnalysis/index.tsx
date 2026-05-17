@@ -17,8 +17,6 @@ const bellCurve = Array.from({ length: 24 }, (_, i) => {
   return { v: Math.round(Math.exp(-0.5 * x * x) * 96) };
 });
 
-const SCALE_LABELS = ['Subtle', 'Masculine', 'Bold'];
-
 // Active dot positions (row 0-4, col 0-4) shared across all quadrants
 const ACTIVE_LOCAL = new Set([
   '0,2',
@@ -105,33 +103,29 @@ export default function FacialAnalysis() {
 
               {/* 10×10 dot grid split into 4 quadrants */}
               <div className={`${styles.panel} ${styles.dotGridPanel}`}>
-                <div className={styles.dotGridInner}>
-                  <div className={styles.scaleLabels}>
-                    {SCALE_LABELS.map(l => (
-                      <span key={l} className={styles.scaleLabel}>{l}</span>
-                    ))}
-                  </div>
-                  <div className={styles.dotGrid}>
-                    {([0, 1, 2, 3] as const).map(q => (
-                      <div
-                        key={q}
-                        className={styles.quadrant}
-                        onMouseEnter={() => setActiveQ(q)}
-                      >
-                        {Array.from({ length: 25 }, (_, idx) => {
-                          const lr = Math.floor(idx / 5);
-                          const lc = idx % 5;
-                          const lit = activeQ === q && ACTIVE_LOCAL.has(`${lr},${lc}`);
-                          return (
-                            <div
-                              key={idx}
-                              className={`${styles.dot}${lit ? ` ${styles.dotActive}` : ''}`}
-                            />
-                          );
-                        })}
-                      </div>
-                    ))}
-                  </div>
+                <div className={styles.dotGrid}>
+                  <span className={styles.labelTop}>Subtle</span>
+                  <span className={styles.labelBottom}>Bold</span>
+                  <span className={styles.labelRight}>Masculine</span>
+                  {([0, 1, 2, 3] as const).map(q => (
+                    <div
+                      key={q}
+                      className={styles.quadrant}
+                      onMouseEnter={() => setActiveQ(q)}
+                    >
+                      {Array.from({ length: 25 }, (_, idx) => {
+                        const lr = Math.floor(idx / 5);
+                        const lc = idx % 5;
+                        const lit = activeQ === q && ACTIVE_LOCAL.has(`${lr},${lc}`);
+                        return (
+                          <div
+                            key={idx}
+                            className={`${styles.dot}${lit ? ` ${styles.dotActive}` : ''}`}
+                          />
+                        );
+                      })}
+                    </div>
+                  ))}
                 </div>
               </div>
 
