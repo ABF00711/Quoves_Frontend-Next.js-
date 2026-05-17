@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -19,6 +19,15 @@ const bellCurve = Array.from({ length: 24 }, (_, i) => {
 
 const SCALE_LABELS = ['Subtle', 'Masculine', 'Bold'];
 
+// Active dot positions (row 0-4, col 0-4) shared across all quadrants
+const ACTIVE_LOCAL = new Set([
+  '0,2',
+  '1,1', '1,2', '1,3',
+  '2,0', '2,1', '2,2', '2,3', '2,4',
+  '3,1', '3,2', '3,3',
+  '4,2',
+]);
+
 const COLOR_MARKERS = [
   { top: '6%', label: 'Light' },
   { top: '30%', label: 'Olive' },
@@ -31,18 +40,14 @@ const THIRDS = [
   { label: 'Higher Third', code: '[D]', val: 0.26 },
 ];
 
-function buildDotGrid() {
-  const active = new Set([3, 5, 14, 15, 16, 25, 26, 27, 28, 38, 39, 40, 50, 51, 63, 64, 65]);
-  return Array.from({ length: 96 }, (_, i) => active.has(i));
-}
-const DOT_GRID = buildDotGrid();
-
 export default function FacialAnalysis() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const topRef = useRef<HTMLDivElement>(null);
-  const faceRef = useRef<HTMLDivElement>(null);
-  const leftPanelsRef = useRef<HTMLDivElement>(null);
-  const rightPanelsRef = useRef<HTMLDivElement>(null);
+  const sectionRef      = useRef<HTMLElement>(null);
+  const topRef          = useRef<HTMLDivElement>(null);
+  const faceRef         = useRef<HTMLDivElement>(null);
+  const leftPanelsRef   = useRef<HTMLDivElement>(null);
+  const rightPanelsRef  = useRef<HTMLDivElement>(null);
+
+  const [activeQ, setActiveQ] = useState<0 | 1 | 2 | 3>(1);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -98,7 +103,7 @@ export default function FacialAnalysis() {
             {/* ── Left panels ── */}
             <div ref={leftPanelsRef} className={styles.panelsLeft}>
 
-              {/* Dot grid with scale */}
+              {/* 10×10 dot grid split into 4 quadrants */}
               <div className={`${styles.panel} ${styles.dotGridPanel}`}>
                 <div className={styles.dotGridInner}>
                   <div className={styles.scaleLabels}>
@@ -107,11 +112,24 @@ export default function FacialAnalysis() {
                     ))}
                   </div>
                   <div className={styles.dotGrid}>
-                    {DOT_GRID.map((active, i) => (
+                    {([0, 1, 2, 3] as const).map(q => (
                       <div
-                        key={i}
-                        className={`${styles.dot}${active ? ` ${styles.active}` : ''}`}
-                      />
+                        key={q}
+                        className={styles.quadrant}
+                        onMouseEnter={() => setActiveQ(q)}
+                      >
+                        {Array.from({ length: 25 }, (_, idx) => {
+                          const lr = Math.floor(idx / 5);
+                          const lc = idx % 5;
+                          const lit = activeQ === q && ACTIVE_LOCAL.has(`${lr},${lc}`);
+                          return (
+                            <div
+                              key={idx}
+                              className={`${styles.dot}${lit ? ` ${styles.dotActive}` : ''}`}
+                            />
+                          );
+                        })}
+                      </div>
                     ))}
                   </div>
                 </div>

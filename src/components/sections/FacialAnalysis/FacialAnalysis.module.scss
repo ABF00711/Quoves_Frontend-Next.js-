@@ -130,7 +130,7 @@
 
 /* ── Dot grid panel ─────────────────────────────────── */
 .dotGridPanel {
-  width: 280px;
+  width: 200px;
 }
 
 .dotGridInner {
@@ -158,20 +158,27 @@
 
 .dotGrid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 4px;
-  padding: 6px;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
   flex: 1;
 }
 
-.dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+.quadrant {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  cursor: pointer;
+}
 
-  &.active {
-    background: rgba(255, 255, 255, 0.75);
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background 0.4s ease;
+
+  &.dotActive {
+    background: rgba(255, 255, 255, 0.85);
   }
 }
 
