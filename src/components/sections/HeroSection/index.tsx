@@ -187,7 +187,7 @@ export default function HeroSection() {
 
         {/* ── Header ── */}
         <div className={styles.top}>
-          <p ref={labelRef} className={styles.label}>Personalised Aesthetics</p>
+          <p ref={labelRef} className={styles.label}>Personalised Analysis</p>
           <h1 ref={headingRef} className={styles.heading}>
             Get your personalised{' '}
             <span className={styles.headingAccent}>Qoves plan</span>
