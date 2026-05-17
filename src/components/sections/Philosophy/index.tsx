@@ -151,8 +151,8 @@ export default function Philosophy() {
             </div>
           </div>
 
-          <div ref={rightCardRef} className={styles.considerCard}>
-            <h3 className={styles.considerCardHeading}>
+          <div ref={rightCardRef} className={`${styles.considerCard} ${styles.considerCardRight}`}>
+            <h3 className={styles.considerCardTitle}>
               The key is approaching it intelligently
             </h3>
             <div className={styles.considerCardBullets}>
