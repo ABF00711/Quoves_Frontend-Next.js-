@@ -73,6 +73,9 @@
   overflow: hidden;
   will-change: transform, opacity;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .cardImageWrap {
@@ -84,7 +87,6 @@
 }
 
 .cardBody {
-  padding: 14px 16px 18px;
 }
 
 .cardTitle {
