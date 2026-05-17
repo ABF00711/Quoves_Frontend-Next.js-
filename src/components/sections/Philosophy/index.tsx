@@ -1,9 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './Philosophy.module.scss';
 
 const CARDS = [
@@ -39,52 +36,11 @@ const KEY_BULLETS = [
 ];
 
 export default function Philosophy() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const insecurityPanelRef = useRef<HTMLDivElement>(null);
-  const considerPanelRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const ctx = gsap.context(() => {
-      gsap.set(insecurityPanelRef.current, { yPercent: 100 });
-      gsap.set(considerPanelRef.current, { yPercent: 100 });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: wrapperRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1.5,
-        },
-      });
-
-      tl.fromTo(
-        insecurityPanelRef.current,
-        { yPercent: 100 },
-        { yPercent: 0, duration: 1, ease: 'none' }
-      );
-
-      tl.fromTo(
-        considerPanelRef.current,
-        { yPercent: 100 },
-        { yPercent: 0, duration: 1, ease: 'none' }
-      );
-      tl.to(
-        insecurityPanelRef.current,
-        { yPercent: -25, duration: 1, ease: 'none' },
-        '<'
-      );
-    }, wrapperRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <div ref={wrapperRef} className={styles.philosophyWrapper}>
-      <div className={styles.philosophySticky}>
+    <div className={styles.philosophyFrame}>
 
-        {/* ── Video — independent, sits at the base of the stack ── */}
+      {/* ── Sticky video — stays fixed behind both sections as they scroll over it ── */}
+      <div className={styles.videoSticky}>
         <video
           className={styles.bgVideo}
           autoPlay
@@ -95,82 +51,81 @@ export default function Philosophy() {
         >
           <source src="/videos/landing-video.mp4" type="video/mp4" />
         </video>
-
         <div className={styles.blurLayer} />
-
-        {/* ── Insecurity panel ── */}
-        <div ref={insecurityPanelRef} className={styles.insecurityPanel}>
-          <div className={styles.insecurityInner}>
-            <h2 className={styles.insecurityHeading}>
-              Will analyzing my face
-              <span className={styles.insecurityHeadingAccent}>Make me insecure?</span>
-            </h2>
-            <p className={styles.insecurityBody}>
-              Most insecurity comes from uncertainty — not knowing if your concerns are real or
-              imagined. When you&rsquo;re guessing about your appearance, your mind often makes
-              things seem worse than they are.
-            </p>
-
-            <div className={styles.cards}>
-              {CARDS.map((card) => (
-                <div key={card.title} className={styles.card}>
-                  <div className={styles.cardImageWrap}>
-                    <Image
-                      src={card.img}
-                      alt={card.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                    />
-                  </div>
-                  <div>
-                    <p className={styles.cardTitle}>{card.title}</p>
-                    <p className={styles.cardDesc}>{card.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* ── Consider panel ── */}
-        <div ref={considerPanelRef} className={styles.considerPanel}>
-          <div className={styles.considerInner}>
-            <div className={styles.considerLeft}>
-              <p className={styles.considerLabel}>Consider this</p>
-              <h3 className={styles.considerHeading}>
-                Is it vain to care about{' '}
-                <span className={styles.considerAccent}>your appearance?</span>
-              </h3>
-              <p className={styles.considerBody}>
-                Most people care about how they look — that&rsquo;s not vanity, it&rsquo;s human.
-                The question is whether you approach it with intention or anxiety. Appearance
-                affects first impressions, self-confidence, and social outcomes in measurable ways.
-                Ignoring that doesn&rsquo;t make it go away.
-              </p>
-              <ul className={styles.bulletList}>
-                {CONSIDER_BULLETS.map((b) => (
-                  <li key={b} className={styles.bulletItem}>{b}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className={styles.considerRight}>
-              <p className={styles.considerRightLabel}>The key is approaching it intelligently</p>
-              <h3 className={styles.keyHeading}>
-                Not chasing perfection —{' '}
-                <span className={styles.keyAccent}>chasing clarity</span>
-              </h3>
-              <ul className={styles.keyBullets}>
-                {KEY_BULLETS.map((b) => (
-                  <li key={b} className={styles.keyBullet}>{b}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      {/* ── Insecurity section — scrolls naturally over the sticky video ── */}
+      <section className={styles.insecurity}>
+        <div className={styles.insecurityInner}>
+          <h2 className={styles.insecurityHeading}>
+            Will analyzing my face
+            <span className={styles.insecurityHeadingAccent}>Make me insecure?</span>
+          </h2>
+          <p className={styles.insecurityBody}>
+            Most insecurity comes from uncertainty — not knowing if your concerns are real or
+            imagined. When you&rsquo;re guessing about your appearance, your mind often makes
+            things seem worse than they are.
+          </p>
+
+          <div className={styles.cards}>
+            {CARDS.map((card) => (
+              <div key={card.title} className={styles.card}>
+                <div className={styles.cardImageWrap}>
+                  <Image
+                    src={card.img}
+                    alt={card.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                  />
+                </div>
+                <div>
+                  <p className={styles.cardTitle}>{card.title}</p>
+                  <p className={styles.cardDesc}>{card.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Consider section — follows insecurity, still over the sticky video ── */}
+      <section className={styles.consider}>
+        <div className={styles.considerInner}>
+          <div className={styles.considerLeft}>
+            <p className={styles.considerLabel}>Consider this</p>
+            <h3 className={styles.considerHeading}>
+              Is it vain to care about{' '}
+              <span className={styles.considerAccent}>your appearance?</span>
+            </h3>
+            <p className={styles.considerBody}>
+              Most people care about how they look — that&rsquo;s not vanity, it&rsquo;s human.
+              The question is whether you approach it with intention or anxiety. Appearance
+              affects first impressions, self-confidence, and social outcomes in measurable ways.
+              Ignoring that doesn&rsquo;t make it go away.
+            </p>
+            <ul className={styles.bulletList}>
+              {CONSIDER_BULLETS.map((b) => (
+                <li key={b} className={styles.bulletItem}>{b}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className={styles.considerRight}>
+            <p className={styles.considerRightLabel}>The key is approaching it intelligently</p>
+            <h3 className={styles.keyHeading}>
+              Not chasing perfection —{' '}
+              <span className={styles.keyAccent}>chasing clarity</span>
+            </h3>
+            <ul className={styles.keyBullets}>
+              {KEY_BULLETS.map((b) => (
+                <li key={b} className={styles.keyBullet}>{b}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
