@@ -1,29 +1,64 @@
 @use '../../../styles/variables' as *;
 @use '../../../styles/mixins' as *;
 
-/* ── Insecurity block ────────────────────────────────── */
-.insecurity {
+/* ── Scroll wrapper — 300vh of scroll space ── */
+.philosophyWrapper {
   position: relative;
-  min-height: 100svh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
+  height: 300vh;
 }
 
+/* ── Single sticky container — video + panels, clips overflow so panels slide without scrollbars ── */
+.philosophySticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: clip;
+}
+
+/* ── Background video ── */
 .bgVideo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
+}
+
+/* ── Gradiated blur: clear at top, fully blurred toward bottom ── */
+.blurLayer {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.5) 55%,
+    black 75%,
+    black 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.5) 55%,
+    black 75%,
+    black 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Insecurity panel ── */
+.insecurityPanel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
 }
 
 .insecurityInner {
   @include container;
-  position: relative;
-  padding-top: 120px;
-  padding-bottom: 120px;
 }
 
 .insecurityHeading {
@@ -50,12 +85,11 @@
   margin-bottom: 48px;
 }
 
-/* ── Cards ───────────────────────────────────────────── */
+/* ── Cards ── */
 .cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  margin-bottom: 0;
 
   @include respond(md) {
     grid-template-columns: 1fr;
@@ -65,10 +99,8 @@
 
 .card {
   height: 230px;
-  background-color: rgba(255, 255, 255, 0.2);
-  -webkit-backdrop-filter: blur(32px);
-  backdrop-filter: blur(32px);
-  border: 1px solid rgba(255, 255, 255, 0.20); 
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   padding: 16px;
   display: flex;
@@ -97,10 +129,12 @@
   line-height: 1.6;
 }
 
-/* ── Consider This ───────────────────────────────────── */
-.consider {
-  background: $white;
-  padding: 100px 0;
+/* ── Consider panel ── */
+.considerPanel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
 }
 
 .considerInner {
@@ -122,13 +156,14 @@
 
 .considerLabel {
   @include label;
+  color: rgba(255, 255, 255, 0.55);
   margin-bottom: 12px;
 }
 
 .considerHeading {
   font-size: clamp(1.6rem, 2.8vw, 2.6rem);
   font-weight: 400;
-  color: $text-primary;
+  color: $white;
   line-height: 1.15;
   letter-spacing: -0.02em;
   margin-bottom: 24px;
@@ -141,7 +176,7 @@
 
 .considerBody {
   font-size: 0.82rem;
-  color: $text-secondary;
+  color: rgba(255, 255, 255, 0.72);
   line-height: 1.75;
   margin-bottom: 24px;
 }
@@ -158,7 +193,7 @@
   align-items: flex-start;
   gap: 10px;
   font-size: 0.78rem;
-  color: $text-secondary;
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.55;
 
   &::before {
@@ -167,25 +202,25 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: $text-muted;
+    background: rgba(255, 255, 255, 0.45);
     margin-top: 7px;
   }
 }
 
-/* Right side */
 .considerRight {
   padding-top: 8px;
 }
 
 .considerRightLabel {
   @include label;
+  color: rgba(255, 255, 255, 0.55);
   margin-bottom: 16px;
 }
 
 .keyHeading {
   font-size: clamp(1.4rem, 2.4vw, 2.2rem);
   font-weight: 400;
-  color: $text-primary;
+  color: $white;
   line-height: 1.2;
   letter-spacing: -0.02em;
   margin-bottom: 20px;
@@ -208,10 +243,10 @@
   align-items: flex-start;
   gap: 10px;
   font-size: 0.78rem;
-  color: $text-secondary;
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.55;
   padding: 10px 0;
-  border-bottom: 1px solid #ececea;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 
   &::before {
     content: '';
@@ -219,7 +254,7 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: $text-muted;
+    background: rgba(255, 255, 255, 0.45);
     margin-top: 7px;
   }
 
