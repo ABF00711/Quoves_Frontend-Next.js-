@@ -47,30 +47,87 @@
   margin: 0 auto;
 }
 
-/* ── Active category card ───────────────────────────── */
-.activeCard {
+/* ── Cards container ────────────────────────────────── */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ── Category card ──────────────────────────────────── */
+.card {
   border: 1px solid #e4e4e2;
   border-radius: 6px;
   overflow: hidden;
-  margin-bottom: 2px;
+  background: radial-gradient(ellipse 87% 80% at 50% 29%, #adacac 0%, #9baaab 35%, #9aaeb5 70% 100%);
+
+  /* Collapsed: header reverts to flat colour, no inner bottom border */
+  &[data-open='false'] {
+    .cardHeader {
+      background: #F2F2F2;
+      border-bottom: none;
+    }
+
+    .cardTitle {
+      color: $text-primary;
+    }
+
+    .cardChevron {
+      color: $text-muted;
+    }
+  }
+
+  /* Expanded: header is transparent so gradient shows through */
+  &[data-open='true'] {
+    .cardHeader {
+      background: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .cardTitle {
+      color: $white;
+    }
+
+    .cardChevron {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
 }
 
-.activeCardHeader {
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   padding: 16px 24px;
-  background: #f5f5f3;
-  border-bottom: 1px solid #e4e4e2;
+  text-align: left;
+  cursor: pointer;
 }
 
-.activeCardTitle {
-  font-size: 0.78rem;
+.cardTitle {
+  font-size: 20px;
   font-weight: 500;
-  color: $text-primary;
   letter-spacing: 0.01em;
+  font-family: $font-sans;
 }
 
-/* ── Accordion item ─────────────────────────────────── */
+.cardChevron {
+  flex-shrink: 0;
+  transition: transform 0.35s ease;
+}
+
+.cardChevronOpen {
+  transform: rotate(180deg);
+}
+
+.cardBody {
+  overflow: hidden;
+  height: 0;
+}
+
+/* ── Accordion item (always inside an expanded gradient card) ── */
 .accordionItem {
-  border-bottom: 1px solid #ececea;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 
   &:last-child {
     border-bottom: none;
@@ -88,19 +145,19 @@
   cursor: pointer;
 
   &:hover .accordionQ {
-    color: $text-primary;
+    color: $white;
   }
 }
 
 .accordionQ {
   font-size: 0.82rem;
   font-weight: 400;
-  color: $text-secondary;
+  color: rgba(255, 255, 255, 0.75);
   line-height: 1.4;
   transition: color 0.2s ease;
 
   .accordionItem[data-open='true'] & {
-    color: $text-primary;
+    color: $white;
     font-weight: 500;
   }
 }
@@ -110,12 +167,12 @@
   margin-left: 16px;
   width: 18px;
   height: 18px;
-  color: $text-muted;
+  color: rgba(255, 255, 255, 0.5);
   transition: transform 0.35s ease;
 
   .accordionItem[data-open='true'] & {
     transform: rotate(45deg);
-    color: $text-primary;
+    color: $white;
   }
 }
 
@@ -127,40 +184,6 @@
 .accordionAnswer {
   padding: 0 24px 18px;
   font-size: 0.8rem;
-  color: $text-secondary;
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1.7;
-}
-
-/* ── Category rows ──────────────────────────────────── */
-.categories {
-  margin-top: 2px;
-}
-
-.categoryRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid #ececea;
-  cursor: pointer;
-  transition: background 0.15s ease;
-
-  &:hover {
-    background: #fafafa;
-  }
-
-  &:first-child {
-    border-top: 1px solid #ececea;
-  }
-}
-
-.categoryName {
-  font-size: 0.82rem;
-  font-weight: 400;
-  color: $text-secondary;
-}
-
-.categoryChevron {
-  color: $text-muted;
-  flex-shrink: 0;
 }
