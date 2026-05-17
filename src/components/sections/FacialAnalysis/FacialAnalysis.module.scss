@@ -66,6 +66,10 @@
 .stage {
   position: relative;
   min-height: 640px;
+
+  @include respond(lg) {
+    min-height: 820px;
+  }
 }
 
 .panelsWrapper {
@@ -74,8 +78,13 @@
   align-items: center;
   width: 100%;
   min-height: 640px;
-  pointer-events: none; /* let clicks pass through to panels below */
+  pointer-events: none;
   margin: auto;
+
+  @include respond(lg) {
+    align-items: flex-start;
+    min-height: 820px;
+  }
 }
 
 .faceWrap {
@@ -86,9 +95,9 @@
   transform: translateX(-50%);
   z-index: 2;
   pointer-events: none;
-
+  
   @include respond(md) {
-    width: 260px;
+    width: 420px;
   }
 }
 
@@ -106,7 +115,8 @@
   padding-right: 24px;
 
   @include respond(lg) {
-    display: none;
+    flex-direction: column;
+    padding-right: 12px;
   }
 }
 
@@ -115,7 +125,8 @@
   padding-left: 24px;
 
   @include respond(lg) {
-    display: none;
+    flex-direction: column;
+    padding-left: 12px;
   }
 }
 
@@ -395,6 +406,10 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
+  @include respond(lg) {
+    width: 190px;
+  }
 }
 
 .melaninBody {
@@ -502,6 +517,10 @@
   padding: 0;
   position: relative;
   overflow: hidden;
+
+  @include respond(lg) {
+    width: 190px;
+  }
 }
 
 .symmetryLines {
@@ -561,6 +580,10 @@
   width: 280px;
   padding: 14px 16px;
   margin-top: 16px;
+
+  @include respond(lg) {
+    width: 190px;
+  }
 }
 
 .panelTitle {
