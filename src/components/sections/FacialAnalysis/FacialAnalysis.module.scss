@@ -142,7 +142,7 @@
 .badgeLabel{
   font-family: $font-sans;
   font-size: 9.24px;
-  color: #FFFF;
+  color: #fff;
 }
 
 .labelTop,
@@ -387,105 +387,215 @@
   }
 }
 
-/* ── Color scale panel ───────────────────────────────── */
-.colorScale {
-  width: 80px;
-  padding: 12px 10px;
+
+/* ── Melanin panel ───────────────────────────────────── */
+.melaninPanel {
+  width: 200px;
+  padding: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
 }
 
-.colorScaleBody {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+.melaninBody {
+  flex: 1;
+  position: relative;
+  height: 280px;
+  margin: 0 16px;
 }
 
-.colorBar {
-  width: 12px;
-  height: 160px;
-  border-radius: 6px;
+.melaninBar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 16px;
+  bottom: 16px;
+  width: 10px;
+  border-radius: 5px;
   background: linear-gradient(
     to bottom,
-    #e8c4a0,
-    #d4a574,
-    #c4874f,
-    #a06030,
-    #784020,
-    #501808
+    #7baed0 0%,
+    #5a8a7a 22%,
+    #6b7a50 38%,
+    #9a7848 55%,
+    #804028 75%,
+    #3d2010 100%
   );
-  position: relative;
 }
 
-.colorBarMarker {
+.melaninLabel {
   position: absolute;
-  right: -18px;
-  width: 8px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.7);
+  left: calc(50% + 14px);
+  transform: translateY(-50%);
+  font-family: $font-mono;
+  font-size: 0.42rem;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+}
 
-  &::after {
-    content: attr(data-label);
-    position: absolute;
-    left: 12px;
-    top: -6px;
+.melaninRef {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.melaninRefLine {
+  flex: 1;
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.45) 0px,
+    rgba(255, 255, 255, 0.45) 3px,
+    transparent 3px,
+    transparent 7px
+  );
+}
+
+.melaninPillLeft,
+.melaninPillRight {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: $font-mono;
+  font-size: 0.38rem;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.melaninFooter {
+  background: rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+
+  p {
+    font-family: $font-sans;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.45;
+
+    em { font-style: italic; }
+  }
+}
+
+/* ── Symmetry panel ──────────────────────────────────── */
+.symmetryPanel {
+  width: 280px;
+  height: 180px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.symmetryLines {
+  position: absolute;
+  inset: 0 16px;
+}
+
+.symmetryLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.symmetryLineDashed {
+  background: none;
+  border-top: 1px dashed rgba(255, 255, 255, 0.35);
+}
+
+.symmetryPill {
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 99px;
+  padding: 2px 8px;
+  font-family: $font-mono;
+  font-size: 0.4rem;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.symmetryAxis {
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+
+  span {
     font-family: $font-mono;
-    font-size: 0.5rem;
-    color: rgba(255, 255, 255, 0.6);
-    white-space: nowrap;
+    font-size: 0.38rem;
+    color: rgba(255, 255, 255, 0.38);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 }
 
 /* ── Facial Thirds panel ─────────────────────────────── */
 .thirdsPanel {
-  width: 220px;
+  width: 280px;
+  padding: 14px 16px;
+  margin-top: 16px;
 }
 
 .panelTitle {
   font-family: $font-mono;
-  font-size: 0.58rem;
+  font-size: 0.5rem;
   color: rgba(255, 255, 255, 0.5);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .thirdsGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
 
 .thirdsCol {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .thirdsLabel {
   font-family: $font-mono;
-  font-size: 0.5rem;
-  color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 0.06em;
-  line-height: 1.4;
+  font-size: 0.42rem;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .thirdsCode {
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .thirdsVal {
   font-family: $font-mono;
-  font-size: 1.1rem;
+  font-size: 0.65rem;
   font-weight: 300;
-  color: $white;
+  color: rgba(255, 255, 255, 0.75);
   line-height: 1;
 }
 
 .thirdsTrack {
-  height: 2px;
+  height: 3px;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 2px;
   overflow: hidden;

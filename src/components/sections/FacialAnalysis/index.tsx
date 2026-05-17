@@ -35,16 +35,24 @@ const ACTIVE_LOCAL = new Set([
   '4,2',
 ]);
 
-const COLOR_MARKERS = [
-  { top: '6%', label: 'Light' },
-  { top: '30%', label: 'Olive' },
-  { top: '58%', label: 'Brown' },
-  { top: '80%', label: 'Deep' },
+const SYMMETRY_LINES = [
+  { label: 'Ideal',   top: '25%', dashed: false, justify: 'flex-end' as const },
+  { label: 'You',     top: '42%', dashed: false, justify: 'flex-end' as const },
+  { label: 'Average', top: '65%', dashed: true,  justify: 'center'   as const },
 ];
 
+const MELANIN_LABELS = [
+  { label: 'Blue',  top: '5%'  },
+  { label: 'Green', top: '28%' },
+  { label: 'Brown', top: '56%' },
+  { label: 'Deep',  top: '82%' },
+];
+const USER_MELANIN_TOP = '56%';
+
 const THIRDS = [
-  { label: 'Lower Third', code: '[O]', val: 0.25 },
-  { label: 'Higher Third', code: '[D]', val: 0.26 },
+  { label: 'Lower Third',  code: '[C]', val: 0.31 },
+  { label: 'Middle Third', code: '[B]', val: 0.36 },
+  { label: 'Upper Third',  code: '[A]', val: 0.31 },
 ];
 
 export default function FacialAnalysis() {
@@ -230,42 +238,68 @@ export default function FacialAnalysis() {
             {/* ── Right panels ── */}
             <div ref={rightPanelsRef} className={styles.panelsRight}>
 
-              {/* ITA color scale */}
-              <div className={`${styles.panel} ${styles.colorScale}`}>
-                <p className={styles.chartLabel} style={{ marginBottom: 12 }}>ITA</p>
-                <div className={styles.colorScaleBody}>
-                  <div className={styles.colorBar}>
-                    {COLOR_MARKERS.map(m => (
+              {/* Melanin panel — mirrors dotGridPanel (tall, column 1) */}
+              <div className={`${styles.panel} ${styles.melaninPanel}`}>
+                <div className={styles.melaninBody}>
+                  <div className={styles.melaninBar}>
+                    {MELANIN_LABELS.map(m => (
+                      <span key={m.label} className={styles.melaninLabel} style={{ top: m.top }}>
+                        {m.label}
+                      </span>
+                    ))}
+                  </div>
+                  <div className={styles.melaninRef} style={{ top: USER_MELANIN_TOP }}>
+                    <span className={styles.melaninPillLeft}>■ Dark Brown</span>
+                    <div className={styles.melaninRefLine} />
+                    <span className={styles.melaninPillRight}>You</span>
+                  </div>
+                </div>
+                <div className={styles.melaninFooter}>
+                  <p>Your eyes have a medium <em>melanin</em> concentration.</p>
+                </div>
+              </div>
+
+              {/* Symmetry + Facial Thirds — mirrors density+smoothness wrapper (column 2) */}
+              <div>
+
+                {/* Symmetry panel */}
+                <div className={`${styles.panel} ${styles.symmetryPanel}`}>
+                  <div className={styles.symmetryLines}>
+                    {SYMMETRY_LINES.map(line => (
                       <div
-                        key={m.label}
-                        className={styles.colorBarMarker}
-                        data-label={m.label}
-                        style={{ top: m.top }}
-                      />
+                        key={line.label}
+                        className={`${styles.symmetryLine}${line.dashed ? ` ${styles.symmetryLineDashed}` : ''}`}
+                        style={{ top: line.top, justifyContent: line.justify }}
+                      >
+                        <span className={styles.symmetryPill}>{line.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className={styles.symmetryAxis}>
+                    <span>Asymmetrical</span>
+                    <span>Symmetrical</span>
+                  </div>
+                </div>
+
+                {/* Facial Thirds panel */}
+                <div className={`${styles.panel} ${styles.thirdsPanel}`}>
+                  <p className={styles.panelTitle}>Facial Thirds</p>
+                  <div className={styles.thirdsGrid}>
+                    {THIRDS.map(t => (
+                      <div key={t.label} className={styles.thirdsCol}>
+                        <p className={styles.thirdsLabel}>
+                          {t.label} <span className={styles.thirdsCode}>{t.code}</span>
+                        </p>
+                        <div className={styles.thirdsTrack}>
+                          <div className={styles.thirdsBar} style={{ width: `${(t.val / 0.4) * 100}%` }} />
+                        </div>
+                        <p className={styles.thirdsVal}>{t.val.toFixed(2)}</p>
+                      </div>
                     ))}
                   </div>
                 </div>
-              </div>
 
-              {/* Facial Thirds */}
-              <div className={`${styles.panel} ${styles.thirdsPanel}`}>
-                <p className={styles.panelTitle}>Facial Thirds</p>
-                <div className={styles.thirdsGrid}>
-                  {THIRDS.map(t => (
-                    <div key={t.label} className={styles.thirdsCol}>
-                      <p className={styles.thirdsLabel}>
-                        {t.label} <span className={styles.thirdsCode}>{t.code}</span>
-                      </p>
-                      <p className={styles.thirdsVal}>{t.val.toFixed(2)}</p>
-                      <div className={styles.thirdsTrack}>
-                        <div className={styles.thirdsBar} style={{ width: `${t.val * 380}%` }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <p className={styles.asymmetrical}>Asymmetrical</p>
               </div>
-
             </div>
           </div>
 
