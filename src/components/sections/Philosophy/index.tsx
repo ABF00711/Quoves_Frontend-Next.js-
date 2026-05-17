@@ -51,11 +51,18 @@ export default function Philosophy() {
         >
           <source src="/videos/landing-video.mp4" type="video/mp4" />
         </video>
-        <div className={styles.blurLayer} />
+
       </div>
 
       {/* ── Insecurity section — scrolls naturally over the sticky video ── */}
       <section className={styles.insecurity}>
+        {/* Blur slices: start at 50% of the section, increase toward bottom.
+            z-index 0 keeps them below the content (insecurityInner is z-index 1). */}
+        <div className={styles.blurSlice} style={{ top: '50%', backdropFilter: 'blur(3px)',  WebkitBackdropFilter: 'blur(3px)'  }} />
+        <div className={styles.blurSlice} style={{ top: '62%', backdropFilter: 'blur(8px)',  WebkitBackdropFilter: 'blur(8px)'  }} />
+        <div className={styles.blurSlice} style={{ top: '72%', backdropFilter: 'blur(15px)', WebkitBackdropFilter: 'blur(15px)' }} />
+        <div className={styles.blurSlice} style={{ top: '81%', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }} />
+
         <div className={styles.insecurityInner}>
           <h2 className={styles.insecurityHeading}>
             Will analyzing my face

@@ -12,7 +12,7 @@
   top: 0;
   height: 100vh;
   z-index: 0;
-  overflow: hidden;
+  /* no overflow:hidden — it breaks backdrop-filter on child elements */
 }
 
 .bgVideo {
@@ -23,30 +23,6 @@
   object-fit: cover;
 }
 
-/* ── Gradient blur: clear at top, fully blurred toward bottom ── */
-.blurLayer {
-  position: absolute;
-  inset: 0;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 35%,
-    rgba(0, 0, 0, 0.5) 55%,
-    black 75%,
-    black 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 35%,
-    rgba(0, 0, 0, 0.5) 55%,
-    black 75%,
-    black 100%
-  );
-  pointer-events: none;
-}
 
 /* ── Insecurity section — scrolls over sticky video ── */
 .insecurity {
@@ -58,8 +34,20 @@
   padding: 80px 0;
 }
 
+/* Blur slices inside insecurity — sit below content via z-index */
+.blurSlice {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .insecurityInner {
   @include container;
+  position: relative;
+  z-index: 1;
 }
 
 .insecurityHeading {
@@ -137,6 +125,8 @@
   position: relative;
   z-index: 1;
   padding: 100px 0;
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 }
 
 .considerInner {
