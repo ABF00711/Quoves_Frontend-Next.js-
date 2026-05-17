@@ -5,6 +5,10 @@
   padding: 72px 0 0;
   background: $white;
   overflow: hidden;
+
+  @include respond(xl) {
+    display: none;
+  }
 }
 
 .container {
