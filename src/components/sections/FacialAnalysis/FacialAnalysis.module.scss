@@ -3,22 +3,21 @@
 
 .section {
   position: relative;
-  background: #8fa5a8;
   overflow: hidden;
-  padding: 100px 0 0;
+  padding: 120px 0;
 }
 
-.bg {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 70% 80% at 50% 60%, #9ab8ba 0%, #7a9ea0 35%, #5c8284 70%, #3d6264 100%);
-  pointer-events: none;
-}
 
 .container {
   @include container;
   position: relative;
   z-index: 1;
+  inset: 0;
+  background: radial-gradient(ellipse 87% 80% at 50% 29%, #959292 0%, #7a9ea0 35%, #9AAEB5 70%, #9AAEB5 100%);
+  pointer-events: none;
+  max-width: 100%;
+  padding: 0px 40px;
+  padding-top: 56px;
 }
 
 .top {
@@ -27,28 +26,40 @@
 }
 
 .label {
-  @include label;
-  color: rgba(255, 255, 255, 0.55);
-  margin-bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 165px;
+  height: 22px;
+  border: 1px solid #9AAEB5;
+  border-radius: 99px;
+  font-family: $font-mono;
+  font-size: 0.48rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: white;
+  margin: 0 auto 22px;
+  gap:8px;
 }
 
 .heading {
-  font-size: clamp(2rem, 3.8vw, 3.4rem);
+  font-family: $font-sans;
+  font-size: clamp(2.4rem, 4.2vw, 3.8rem);
   font-weight: 400;
-  color: $white;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  margin-bottom: 16px;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: white;
+  margin-bottom: 18px;
 }
 
 .headingAccent {
-  font-style: italic;
-  font-weight: 600;
+  color: #9AAEB5;
 }
 
 .subtitle {
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: #9AAEB5;
   line-height: 1.65;
   max-width: 380px;
   margin: 0 auto;
@@ -66,7 +77,7 @@
 .faceWrap {
   position: relative;
   z-index: 2;
-  width: 340px;
+  width: 460px;
   flex-shrink: 0;
 
   @include respond(md) {
@@ -111,13 +122,40 @@
   will-change: transform, opacity;
 }
 
-/* Dot grid panel */
+/* ── Dot grid panel ─────────────────────────────────── */
+.dotGridPanel {
+  width: 280px;
+}
+
+.dotGridInner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.scaleLabels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 108px; /* matches dot grid height */
+  padding: 6px 0;
+}
+
+.scaleLabel {
+  font-family: $font-mono;
+  font-size: 0.48rem;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .dotGrid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 4px;
-  padding: 14px;
-  width: 220px;
+  padding: 6px;
+  flex: 1;
 }
 
 .dot {
@@ -131,7 +169,7 @@
   }
 }
 
-/* Chart panel */
+/* ── Chart panel ─────────────────────────────────────── */
 .chartPanel {
   width: 220px;
 }
@@ -145,6 +183,29 @@
   margin-bottom: 8px;
 }
 
+.chartAxis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+
+  span {
+    font-family: $font-mono;
+    font-size: 0.48rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.06em;
+  }
+}
+
+.percentileText {
+  font-family: $font-mono;
+  font-size: 0.5rem;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  margin-top: 8px;
+  font-style: italic;
+}
+
 .chartPct {
   font-family: $font-mono;
   font-size: 1.6rem;
@@ -154,14 +215,20 @@
   margin-top: 8px;
 }
 
-/* Color scale panel */
+/* ── Color scale panel ───────────────────────────────── */
 .colorScale {
-  width: 64px;
+  width: 80px;
   padding: 12px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
+}
+
+.colorScaleBody {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .colorBar {
@@ -182,7 +249,7 @@
 
 .colorBarMarker {
   position: absolute;
-  right: -16px;
+  right: -18px;
   width: 8px;
   height: 1px;
   background: rgba(255, 255, 255, 0.7);
@@ -199,34 +266,71 @@
   }
 }
 
-/* Metrics panel */
-.metricsPanel {
-  width: 180px;
+/* ── Facial Thirds panel ─────────────────────────────── */
+.thirdsPanel {
+  width: 220px;
 }
 
-.metricRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.metricKey {
+.panelTitle {
   font-family: $font-mono;
-  font-size: 0.55rem;
+  font-size: 0.58rem;
   color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
-.metricVal {
+.thirdsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.thirdsCol {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.thirdsLabel {
   font-family: $font-mono;
-  font-size: 0.7rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.5rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+
+.thirdsCode {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.thirdsVal {
+  font-family: $font-mono;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: $white;
+  line-height: 1;
+}
+
+.thirdsTrack {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.thirdsBar {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+}
+
+.asymmetrical {
+  font-family: $font-mono;
+  font-size: 0.5rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin-top: 12px;
+  text-transform: uppercase;
 }
