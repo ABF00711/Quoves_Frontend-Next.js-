@@ -72,7 +72,7 @@ export default function HeroSection() {
       const afterRect  = after.getBoundingClientRect();
       const compRect   = comp.getBoundingClientRect();
 
-      const PAD = 38; // 19px visual padding (viewBox offset accounts for half)
+      const PAD = 32; // 19px visual padding (viewBox offset accounts for half)
       const R   = 12;
 
       svg.setAttribute('viewBox', `${-PAD / 2} ${-PAD / 2} ${compRect.width + PAD} ${compRect.height + PAD}`);
