@@ -26,7 +26,7 @@
 .bgVideoOverlay {
   width: 100vw;
   height: 100vh;
-  background-image: linear-gradient(45deg, black, transparent);
+  background-image: linear-gradient(45deg, #000000b5, #0000);
   position: sticky;
   z-index: 1;
 }
@@ -64,25 +64,23 @@
 }
 
 .insecurityHeading {
-  font-size: clamp(2rem, 4vw, 3.6rem);
+  font-size: 40px;
   font-weight: 400;
   color: $white;
   line-height: 1.1;
   letter-spacing: -0.025em;
   max-width: 560px;
   margin-bottom: 20px;
+  font-family: $font-sans;
 }
 
 .insecurityHeadingAccent {
   display: block;
-  font-style: italic;
-  font-weight: 600;
 }
 
 .insecurityBody {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.75;
+  font-size: 16px;
+  color: #FFFFFF;
   max-width: 420px;
   margin-bottom: 48px;
 }
