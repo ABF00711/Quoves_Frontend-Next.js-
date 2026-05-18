@@ -67,15 +67,10 @@
 .comparison {
   position: relative;
   display: grid;
-  grid-template-columns: 437.73px 405px 437.73px;
-  justify-content: space-between;
+  grid-template-columns: 1fr minmax(80px, 420px) 1fr;
   align-items: start;
   gap: 0;
-  padding: 32px 0px;
-
-  @include respond(lg) {
-    grid-template-columns: minmax(0, 437.73px) minmax(80px, 405px) minmax(0, 437.73px);
-  }
+  padding: 23px;
 
   @include respond(md) {
     grid-template-columns: 1fr;
@@ -87,15 +82,10 @@
   position: relative;
   border-radius: 10px;
   overflow: hidden;
-  width: 437.73px;
-  height: 500.16px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 437.73 / 500.16;
   background: #D7E5EB;
-
-  @include respond(lg) {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 437.73 / 500.16;
-  }
 }
 
 .compareLabel {

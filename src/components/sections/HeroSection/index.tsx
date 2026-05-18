@@ -72,13 +72,13 @@ export default function HeroSection() {
       const afterRect  = after.getBoundingClientRect();
       const compRect   = comp.getBoundingClientRect();
 
-      const PAD = 32; // 19px visual padding (viewBox offset accounts for half)
+      const PAD = 38; // 19px visual padding (viewBox offset accounts for half)
       const R   = 12;
 
       svg.setAttribute('viewBox', `${-PAD / 2} ${-PAD / 2} ${compRect.width + PAD} ${compRect.height + PAD}`);
 
       // Before card rectangle bounds
-      const bx1 = beforeRect.left   - compRect.left - PAD;
+      const bx1 = beforeRect.left   - compRect.left - PAD / 2;
       const by1 = beforeRect.top    - compRect.top  - PAD;
       const bx2 = beforeRect.right  - compRect.left + PAD;
       const by2 = beforeRect.bottom - compRect.top  + PAD;
@@ -86,7 +86,7 @@ export default function HeroSection() {
       // After card rectangle bounds
       const ax1 = afterRect.left   - compRect.left - PAD;
       const ay2 = afterRect.bottom - compRect.top  + PAD;
-      const ax2 = afterRect.right  - compRect.left + PAD;
+      const ax2 = afterRect.right  - compRect.left + PAD / 2;
 
       // Connector rectangle: 30% of card height, centered vertically
       const midY      = (by1 + by2) / 2;
